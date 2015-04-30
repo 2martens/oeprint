@@ -9,6 +9,7 @@ import sys
 
 from config import Config
 from file import *
+from print import *
 
 
 def main():
@@ -18,13 +19,13 @@ def main():
     parser = argparse.ArgumentParser(description='Printing tool for Orientation Unit')
     parser.add_argument('build', metavar='build', help='the identifier of the build')
     parser.add_argument('prints', metavar='numberOfPrints', type=int, help='how often the build is printed')
-    parser.add_argument('--printer', dest='printer', help='a valid printer name like d116_sw', default='d116_sw')
+    parser.add_argument('--printer', dest='printer', help='a valid printer name like d116_sw', default='e120_hp')
     arguments = parser.parse_args()
     config = Config('configuration/config.json')
     build_data = config.load_build(arguments.build)
     if build_data:
         build_data['files'] = insert_file_paths(year, 'files', build_data['files'])
-        print(build_data)
+        print_files(arguments.printer, build_data['files'])
     else:
         print('Invalid build', file=sys.stderr)
     # TODO add actual functionality
