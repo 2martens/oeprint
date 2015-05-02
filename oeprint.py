@@ -25,10 +25,28 @@ def main():
     build_data = config.load_build(arguments.build)
     if build_data:
         build_data['files'] = insert_file_paths(year, 'files', build_data['files'])
-        print_files(arguments.printer, build_data['files'])
+        for i in range(0, arguments.prints):
+            if build_data['files']:
+                print_files(arguments.printer, build_data['files'])
+            if build_data['builds']:
+                print_builds(config, year, arguments.printer, build_data['builds'])
+
     else:
         print('Invalid build', file=sys.stderr)
-    # TODO add actual functionality
 
 if __name__ == '__main__':
     main()
+
+
+def print_builds(config, year, printer, builds):
+    """
+    Prints builds
+    :type config: config.Config
+    :type year: str
+    :type printer: str
+    :type builds: list
+    """
+    for build in builds:
+        build_data = config.load_build(build)
+        build_data['files'] = insert_file_paths(year, 'files', build_data['files'])
+        print_files(printer, build_data['files'])
