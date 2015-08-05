@@ -10,6 +10,7 @@ import sys
 from config import Config
 from file import *
 from print import *
+from merge import *
 
 
 def main():
@@ -20,6 +21,8 @@ def main():
     parser.add_argument('build', metavar='build', help='the identifier of the build')
     parser.add_argument('prints', metavar='numberOfPrints', type=int, help='how often the build is printed')
     parser.add_argument('--printer', dest='printer', help='a valid printer name like d116_sw', default='e120_hp')
+    parser.add_argument('--merge', dest='merge', type=bool, help='yes if the files should be merged before printing',
+                        default=False)
     arguments = parser.parse_args()
     config = Config('configuration/config.json')
     build_data = config.load_build(arguments.build)
@@ -29,7 +32,7 @@ def main():
             if build_data['files']:
                 print_files(arguments.printer, build_data['files'])
             if build_data['builds']:
-                print_builds(config, year, arguments.printer, build_data['builds'])
+                print_builds(config, year, arguments.printer, build_data['builds'], arguments.merge)
 
     else:
         print('Invalid build', file=sys.stderr)
@@ -38,7 +41,7 @@ if __name__ == '__main__':
     main()
 
 
-def print_builds(config, year, printer, builds):
+def print_builds(config, year, printer, builds, useMerge):
     """
     Prints builds
     :type config: config.Config
@@ -49,4 +52,9 @@ def print_builds(config, year, printer, builds):
     for build in builds:
         build_data = config.load_build(build)
         build_data['files'] = insert_file_paths(year, 'files', build_data['files'])
-        print_files(printer, build_data['files'])
+        if useMerge:
+            merge_pdf_file = 'files/' + build + '-merge.pdf'
+            merge_pdf_files(merge_pdf_file)
+            print_merged_file(printer, merge_pdf_file)
+        else:
+            print_files(printer, build_data['files'])
