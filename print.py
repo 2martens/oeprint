@@ -14,3 +14,12 @@ def print_files(printer, files):
     for file in files:
         call(['lpr', '-o fitplot', '-o fit-to-page', file['options'], '-U oe', '-P' + printer, '-# ' + str(file['prints']),
               file['path']])
+
+
+def print_merged_file(printer, merge_file):
+    """
+    Prints the given merged PDF file on the given printer.
+    :param printer: str
+    :param merge_file: str
+    """
+    call(['lpr', '-o fitplot', '-o fit-to-page', '-U oe', '-P' + printer, '-#1', merge_file])
