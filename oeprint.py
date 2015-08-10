@@ -41,18 +41,19 @@ if __name__ == '__main__':
     main()
 
 
-def print_builds(config, year, printer, builds, useMerge):
+def print_builds(config, year, printer, builds, use_merge):
     """
     Prints builds
     :type config: config.Config
     :type year: str
     :type printer: str
     :type builds: list
+    :type use_merge: bool
     """
     for build in builds:
         build_data = config.load_build(build)
         build_data['files'] = insert_file_paths(year, 'files', build_data['files'])
-        if useMerge:
+        if use_merge:
             merge_pdf_file = 'files/' + build + '-merge.pdf'
             merge_pdf_files(merge_pdf_file)
             print_merged_file(printer, merge_pdf_file)
