@@ -4,7 +4,12 @@
       {
         "identifier": "test",
         "prints": 1,
-        "options": "-o sides=one-sided"
+        "options": ""
+      },
+      {
+        "identifier": "test2",
+        "prints": 1,
+        "options": ""
       }
     ],
     "builds": []
