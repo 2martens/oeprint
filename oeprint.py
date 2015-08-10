@@ -30,7 +30,12 @@ def main():
         build_data['files'] = insert_file_paths(year, 'files', build_data['files'])
         for i in range(0, arguments.prints):
             if build_data['files']:
-                print_files(arguments.printer, build_data['files'])
+                if arguments.merge:
+                    merge_pdf_file = 'files/' + arguments.build + '-merge.pdf'
+                    merge_pdf_files(merge_pdf_file, build_data['files'])
+                    print_merged_file(arguments.printer, merge_pdf_file)
+                else:
+                    print_files(arguments.printer, build_data['files'])
             if build_data['builds']:
                 print_builds(config, year, arguments.printer, build_data['builds'], arguments.merge)
 
@@ -55,7 +60,7 @@ def print_builds(config, year, printer, builds, use_merge):
         build_data['files'] = insert_file_paths(year, 'files', build_data['files'])
         if use_merge:
             merge_pdf_file = 'files/' + build + '-merge.pdf'
-            merge_pdf_files(merge_pdf_file)
+            merge_pdf_files(merge_pdf_file, build_data['files'])
             print_merged_file(printer, merge_pdf_file)
         else:
             print_files(printer, build_data['files'])
