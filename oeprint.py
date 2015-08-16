@@ -9,7 +9,7 @@ import sys
 
 from config import Config
 from file import *
-from print import *
+from printing import *
 from merge import *
 
 

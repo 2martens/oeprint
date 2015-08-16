@@ -1,4 +1,4 @@
-"""print.py; Provides functionality for printing"""
+"""printing.py; Provides functionality for printing"""
 
 __author__ = 'Jim Martens'
 
