@@ -12,12 +12,9 @@ def print_files(printer, files):
     :type files: list
     """
     for file in files:
-        if not file['options']:
-            call(['lpr', '-o fitplot', '-o fit-to-page', '-U oe', '-P' + printer, '-# ' + str(file['prints']),
-                  file['path']])
-        else:
-            call(['lpr', '-o fitplot', '-o fit-to-page', file['options'], '-U oe', '-P' + printer, '-# ' + str(file['prints']),
-                  file['path']])
+        options = ['-o fitplot', '-o fit-to-page']
+        options += file['options'] if file['options'] else []
+        call(['lpr'] + options + ['-U oe', '-P' + printer, '-# ' + str(file['prints']), file['path']])
 
 
 def print_merged_file(printer, merge_file):
