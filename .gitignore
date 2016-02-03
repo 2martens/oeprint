@@ -2,3 +2,4 @@ __pycache__/
 files/
 files/*/
 *.pyc
+client/config.ini

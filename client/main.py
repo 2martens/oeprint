@@ -4,6 +4,8 @@ import sys
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QMenuBar, QMenu
 
+from config import ConfigDialog
+
 
 class Main:
     """Main class of the application"""
@@ -45,6 +47,12 @@ class Main:
         close_action.triggered.connect(self.__close)
         close_action.setShortcut(QKeySequence.Quit)
 
+        # edit menu
+        edit_menu = QMenu('&Edit', menu_bar)
+        config_dialog = ConfigDialog(self.__mainWindow)
+        preferences_action = edit_menu.addAction('&Preferences')
+        preferences_action.triggered.connect(config_dialog.show)
+
         # TODO fill with actual menu
         # create help menu
         help_menu = QMenu('&Help', menu_bar)
@@ -52,6 +60,7 @@ class Main:
         about_qt_action.triggered.connect(self.__application.aboutQt)
 
         menu_bar.addMenu(file_menu)
+        menu_bar.addMenu(edit_menu)
         menu_bar.addMenu(help_menu)
         return menu_bar
 
