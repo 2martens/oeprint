@@ -1,4 +1,5 @@
 import configparser
+from shutil import copyfile
 
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QPushButton, QGridLayout, QLabel, QLineEdit
 
@@ -35,11 +36,22 @@ class Config:
         """Writes the settings"""
         self.__write()
 
+    def ___create_config_file(self):
+        """Creates the config file"""
+        config_file_template = 'config.ini.template'
+        copyfile(config_file_template, self.__configfile)
+
     def __read(self):
         """Returns the config parser for the config file"""
         config = configparser.ConfigParser()
-        with open(self.__configfile, 'r') as configfile:
-            config.read_file(configfile)
+        try:
+            with open(self.__configfile, 'r') as configfile:
+                config.read_file(configfile)
+        except FileNotFoundError:
+            self.___create_config_file()
+            with open(self.__configfile, 'r') as configfile:
+                config.read_file(configfile)
+
         return config
 
     def __write(self):
