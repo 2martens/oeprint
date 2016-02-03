@@ -1,0 +1,60 @@
+#! /usr/bin/env python3
+import sys
+
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QMenuBar, QMenu
+
+
+class Main:
+    """Main class of the application"""
+    def __init__(self):
+        """Initializes the application"""
+        self.__application = QApplication(sys.argv)
+        self.__application.setApplicationName('OE Printtool Client')
+        self.__mainWindow = QMainWindow()
+        self.__mainWindow.setWindowTitle('OE Printtool Client')
+        # set up main window
+        self.__contentPane = self.__create_content_pane()
+        self.__menuBar = self.__create_menu_bar()
+        self.__mainWindow.setCentralWidget(self.__contentPane)
+        self.__mainWindow.setMenuBar(self.__menuBar)
+        self.__mainWindow.show()
+        self.__returnCode = self.__application.exec()
+
+    def return_code(self):
+        """Returns the return code"""
+        return self.__returnCode
+
+    def __close(self):
+        """Closes the application"""
+        self.__application.closeAllWindows()
+
+    def __create_content_pane(self):
+        """Creates the central content pane"""
+        content_pane = QWidget(self.__mainWindow)
+        # TODO create content pane
+        return content_pane
+
+    def __create_menu_bar(self):
+        """Creates the menu bar"""
+        # create menus
+        menu_bar = QMenuBar()
+        # create file menu
+        file_menu = QMenu('&File', menu_bar)
+        close_action = file_menu.addAction('&Quit')
+        close_action.triggered.connect(self.__close)
+        close_action.setShortcut(QKeySequence.Quit)
+
+        # TODO fill with actual menu
+        # create help menu
+        help_menu = QMenu('&Help', menu_bar)
+        about_qt_action = help_menu.addAction('About &Qt')
+        about_qt_action.triggered.connect(self.__application.aboutQt)
+
+        menu_bar.addMenu(file_menu)
+        menu_bar.addMenu(help_menu)
+        return menu_bar
+
+if __name__ == '__main__':
+    main = Main()
+    sys.exit(main.return_code())
