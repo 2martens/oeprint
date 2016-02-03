@@ -91,4 +91,5 @@ class ConfigDialog(QDialog):
         """Saves the preferences"""
         ssh_host = self.sshHostLine.text()
         self.__config.set('SSH', 'host', ssh_host)
+        self.__config.write()
         self.hide()
