@@ -2,7 +2,7 @@
 
 __author__ = 'Jim Martens'
 
-from pypdf2.PyPDF2 import PdfFileReader, PdfFileMerger
+from server.pypdf2.PyPDF2 import PdfFileReader, PdfFileMerger
 
 
 def merge_pdf_files(name, files):

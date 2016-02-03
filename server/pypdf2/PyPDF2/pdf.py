@@ -42,7 +42,6 @@ __author_email__ = "biziqe@mathieu.fenniak.net"
 __maintainer__ = "Phaseit, Inc."
 __maintainer_email = "PyPDF2@phaseit.net"
 
-import string
 import math
 import struct
 import sys
@@ -57,13 +56,9 @@ if version_info < ( 3, 0 ):
 else:
     from io import BytesIO
 
-from . import filters
-from . import utils
-import warnings
-import codecs
 from .generic import *
 from .utils import readNonWhitespace, readUntilWhitespace, ConvertFunctionsToVirtualList
-from .utils import Str, b_, u_, ord_, chr_, str_, string_type, formatWarning
+from .utils import Str, b_, u_, ord_, str_, string_type, formatWarning
 
 if version_info < ( 2, 4 ):
    from sets import ImmutableSet as frozenset
@@ -1336,10 +1331,10 @@ class PdfFileReader(object):
                 # Adobe Reader doesn't complain, so continue (in strict mode?)
                 e = sys.exc_info()[1]
                 warnings.warn("Invalid stream (index %d) within object %d %d: %s" % \
-                      (i, indirectReference.idnum, indirectReference.generation, e), utils.PdfReadWarning)
+                              (i, indirectReference.idnum, indirectReference.generation, e), utils.PdfReadWarning)
 
                 if self.strict:
-                    raise utils.PdfReadError("Can't read object stream: %s"%e)
+                    raise utils.PdfReadError("Can't read object stream: %s" % e)
                 # Replace with null. Hopefully it's nothing important.
                 obj = NullObject()
             return obj
@@ -1368,7 +1363,7 @@ class PdfFileReader(object):
                 # Xref table probably had bad indexes due to not being zero-indexed
                 if self.strict:
                     raise utils.PdfReadError("Expected object ID (%d %d) does not match actual (%d %d); xref table not zero-indexed." \
-                                     % (indirectReference.idnum, indirectReference.generation, idnum, generation))
+                                             % (indirectReference.idnum, indirectReference.generation, idnum, generation))
                 else: pass # xref table is corrected in non-strict mode
             elif idnum != indirectReference.idnum:
                 # some other problem
@@ -1392,7 +1387,7 @@ class PdfFileReader(object):
                 key = md5_hash[:min(16, len(self._decryption_key) + 5)]
                 retval = self._decryptObject(retval, key)
         else:
-            warnings.warn("Object %d %d not defined."%(indirectReference.idnum,
+            warnings.warn("Object %d %d not defined." % (indirectReference.idnum,
                         indirectReference.generation), utils.PdfReadWarning)
             #if self.strict:
             raise utils.PdfReadError("Could not find object.")
@@ -1579,7 +1574,7 @@ class PdfFileReader(object):
                 entrySizes = xrefstream.get("/W")
                 assert len(entrySizes) >= 3
                 if self.strict and len(entrySizes) > 3:
-                    raise utils.PdfReadError("Too many entry sizes: %s" %entrySizes)
+                    raise utils.PdfReadError("Too many entry sizes: %s" % entrySizes)
                 def getEntry(i):
                     # Reads the correct number of bytes for each entry. See the
                     # discussion of the W parameter in PDF spec table 17.
@@ -1631,8 +1626,8 @@ class PdfFileReader(object):
                                         num, objstr_num, obstr_idx)))
                                 self.xref_objStm[num] = (objstr_num, obstr_idx)
                         elif self.strict:
-                            raise utils.PdfReadError("Unknown xref type: %s"%
-                                                        xref_type)
+                            raise utils.PdfReadError("Unknown xref type: %s" %
+                                                     xref_type)
 
                 trailerKeys = "/Root", "/Encrypt", "/Info", "/ID"
                 for key in trailerKeys:
@@ -2439,7 +2434,7 @@ class ContentStream(DecodedStreamObject):
             stream.seek(-1, 1)
             if peek.isalpha() or peek == "'" or peek == '"':
                 operator = utils.readUntilRegex(stream,
-                        NameObject.delimiterPattern, True)
+                                                NameObject.delimiterPattern, True)
                 if operator == "BI":
                     # begin inline image - a completely different parsing
                     # mechanism is required, of course... thanks buddy...

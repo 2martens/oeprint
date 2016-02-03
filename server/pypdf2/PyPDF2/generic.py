@@ -34,15 +34,17 @@ Implementation of generic PDF objects (dictionary, number, string, and so on)
 __author__ = "Mathieu Fenniak"
 __author_email__ = "biziqe@mathieu.fenniak.net"
 
+import codecs
+import decimal
 import re
-from .utils import readNonWhitespace, RC4_encrypt, skipOverComment
-from .utils import b_, u_, chr_, ord_
-from .utils import PdfStreamError
 import warnings
+
 from . import filters
 from . import utils
-import decimal
-import codecs
+from .utils import PdfStreamError
+from .utils import b_, u_, chr_, ord_
+from .utils import readNonWhitespace, RC4_encrypt, skipOverComment
+
 #import debugging
 
 ObjectPrefix = b_('/<[tf(n%')
@@ -572,10 +574,10 @@ class DictionaryObject(dict, PdfObject):
             elif pdf.strict:
                 # multiple definitions of key not permitted
                 raise utils.PdfReadError("Multiple definitions in dictionary at byte %s for key %s" \
-                                           % (utils.hexStr(stream.tell()), key))
+                                         % (utils.hexStr(stream.tell()), key))
             else:
                 warnings.warn("Multiple definitions in dictionary at byte %s for key %s" \
-                                           % (utils.hexStr(stream.tell()), key), utils.PdfReadWarning)
+                              % (utils.hexStr(stream.tell()), key), utils.PdfReadWarning)
 
         pos = stream.tell()
         s = readNonWhitespace(stream)

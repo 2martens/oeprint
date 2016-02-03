@@ -8,9 +8,10 @@ import argparse
 import sys
 
 from config import Config
-from file import *
-from printing import *
 from merge import *
+from printing import *
+
+from server.file import *
 
 
 def main():
