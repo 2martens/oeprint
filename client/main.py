@@ -2,9 +2,10 @@
 import sys
 
 from PyQt5.QtGui import QKeySequence
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QMenuBar, QMenu
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QMenuBar, QMenu, QBoxLayout
 
 from config import ConfigDialog
+from configuration_view import ConfigurationView
 
 
 class Main:
@@ -34,6 +35,11 @@ class Main:
     def __create_content_pane(self):
         """Creates the central content pane"""
         content_pane = QWidget(self.__mainWindow)
+        layout = QBoxLayout(QBoxLayout.LeftToRight)
+        content_pane.setLayout(layout)
+        # add configuration view
+        configuration_view = ConfigurationView()
+        layout.addWidget(configuration_view)
         # TODO create content pane
         return content_pane
 
