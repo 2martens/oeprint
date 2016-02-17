@@ -1,2 +1,4 @@
 [SSH]
 host=
+[Data]
+file=data.json
