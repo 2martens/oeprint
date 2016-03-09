@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QMenuBar, QMenu,
 
 from config import ConfigDialog
 from configuration_view import ConfigurationView
+from material_view import MaterialView
 
 
 class Main:
@@ -40,6 +41,9 @@ class Main:
         # add configuration view
         configuration_view = ConfigurationView()
         layout.addWidget(configuration_view)
+        # add material view
+        material_view = MaterialView()
+        layout.addWidget(material_view)
         # TODO create content pane
         return content_pane
 
