@@ -67,6 +67,7 @@ class ConfigurationView(QWidget):
         current_config_name = selected_item.text()
         current_config = configurations[current_config_name]
         self._show_detail_view(current_config)
+        # TODO update material view
 
     def _create_detail_view(self):
         """
