@@ -2,7 +2,7 @@ from PyQt5.QtCore import QModelIndex
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtWidgets import QListView, QWidget, QBoxLayout, QSpinBox, QFormLayout, QPushButton, QLabel
 
-from data import DataStorage, Configuration
+from client.data import DataStorage, Configuration
 
 __author__ = "Jim Martens"
 

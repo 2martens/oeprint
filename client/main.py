@@ -4,9 +4,9 @@ import sys
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QMenuBar, QMenu, QBoxLayout
 
-from config import ConfigDialog
-from configuration_view import ConfigurationView
-from material_view import MaterialView
+from client.config import ConfigDialog
+from client.configuration_view import ConfigurationView
+from client.material_view import MaterialView
 
 
 class Main:

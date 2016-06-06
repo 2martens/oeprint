@@ -3,3 +3,5 @@ files/
 files/*/
 *.pyc
 client/config.ini
+.idea/
+client/data.json

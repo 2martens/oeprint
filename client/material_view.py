@@ -1,7 +1,7 @@
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtWidgets import QWidget, QBoxLayout, QTreeView, QLabel, QFormLayout
 
-from data import DataStorage, Material
+from client.data import DataStorage, Material
 
 __author__ = "Jim Martens"
 
@@ -44,8 +44,6 @@ class MaterialView(QWidget):
         data = DataStorage()
         materials = data.get_materials()
         model = QStandardItemModel()
-        # TODO: if parent item is checked, sub items should be checked too
-        # TODO: if all sub items are checked, the parent item should be checked too
         for name in materials:
             material = materials[name]
             item = QStandardItem()
@@ -76,7 +74,10 @@ class MaterialView(QWidget):
         current_material_name = selected_item.text()
         parent_item = selected_item.parent()
         current_material = None
+
         if parent_item is not None:
+            parent_item.setCheckState(2 if self._all_children_are_set(parent_item) else 0);
+
             parent_material = materials[parent_item.text()]
             sub_materials = parent_material.get_materials()
             for sub_material in sub_materials:
@@ -85,7 +86,22 @@ class MaterialView(QWidget):
                     break
         else:
             current_material = materials[current_material_name]
+
+        self._check_all_children(selected_item)
         self._show_detail_view(current_material)
+
+    def _check_all_children(self, parent_item):
+        if parent_item.hasChildren():
+            for row in range(parent_item.rowCount()):
+                parent_item.child(row).setCheckState(parent_item.checkState());
+
+    def _all_children_are_set(self, parent_item):
+        if parent_item.hasChildren():
+            for row in range(parent_item.rowCount()):
+                if parent_item.child(row).checkState()==0:
+                    return False
+            return True
+        return False
 
     def _create_detail_view(self):
         """
