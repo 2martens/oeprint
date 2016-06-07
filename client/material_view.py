@@ -82,9 +82,12 @@ class MaterialView(QWidget):
         current_material = None
 
         if parent_item is not None:
-            parent_item.setCheckState(2 if self._all_children_are_set(parent_item) else 0);
+            temp = parent_item
+            while temp is not None:
+                temp.setCheckState(2 if self._all_children_are_set(temp) else 0)
+                temp = temp.parent()
 
-            parent_material = materials[parent_item.text()]
+            parent_material = data.get_material(parent_item.text())
             sub_materials = parent_material.get_materials()
             for sub_material in sub_materials:
                 if sub_material.get_name() == selected_item.text():
@@ -99,7 +102,9 @@ class MaterialView(QWidget):
     def _check_all_children(self, parent_item):
         if parent_item.hasChildren():
             for row in range(parent_item.rowCount()):
-                parent_item.child(row).setCheckState(parent_item.checkState());
+                child = parent_item.child(row)
+                child.setCheckState(parent_item.checkState())
+                self._check_all_children(child)
 
     def _all_children_are_set(self, parent_item):
         if parent_item.hasChildren():

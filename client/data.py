@@ -27,6 +27,13 @@ class DataStorage:
         """
         return self._processedData.get("materials")
 
+    def get_material(self, name):
+        for material in self._processedData.get("materials"):
+            result = self._processedData.get("materials")[material].get_material(name)
+            if result is not None:
+                return result
+        return None
+
     def _process_data(self) -> dict:
         """
         Processes the raw JSON data and transforms it into Python objects.
@@ -239,6 +246,15 @@ class Material:
         Returns the child materials.
         """
         return self._materials
+
+    def get_material(self, name):
+        if self._name == name:
+            return self
+        for material in self.get_materials():
+            result = material.get_material(name)
+            if result is not None:
+                return result
+        return None
 
     def add_material(self, material: 'Material'):
         """
