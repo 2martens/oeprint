@@ -3,6 +3,7 @@ from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtWidgets import QListView, QWidget, QBoxLayout, QSpinBox, QFormLayout, QPushButton, QLabel
 
 from client.data import DataStorage, Configuration
+from client.helper.model_helper import create_new_item
 
 __author__ = "Jim Martens"
 
@@ -47,10 +48,7 @@ class ConfigurationView(QWidget):
         model = QStandardItemModel()
 
         for name in configurations:
-            item = QStandardItem()
-            item.setText(name)
-            item.setCheckable(True)
-            item.setEditable(False)
+            item = create_new_item(name);
             model.appendRow(item)
 
         return model
@@ -68,6 +66,7 @@ class ConfigurationView(QWidget):
         current_config = configurations[current_config_name]
         self._show_detail_view(current_config)
         # TODO update material view
+
 
     def _create_detail_view(self):
         """

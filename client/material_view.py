@@ -2,6 +2,7 @@ from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtWidgets import QWidget, QBoxLayout, QTreeView, QLabel, QFormLayout
 
 from client.data import DataStorage, Material
+from client.helper.model_helper import create_new_item
 
 __author__ = "Jim Martens"
 
@@ -46,10 +47,7 @@ class MaterialView(QWidget):
         model = QStandardItemModel()
         for name in materials:
             material = materials[name]
-            item = QStandardItem()
-            item.setText(name)
-            item.setCheckable(True)
-            item.setEditable(False)
+            item = create_new_item(name)
             sub_materials = material.get_materials()
             for sub_material in sub_materials:
                 MaterialView._get_submaterial_model(sub_material, item)
@@ -60,10 +58,7 @@ class MaterialView(QWidget):
 
     @staticmethod
     def _get_submaterial_model(material, item):
-        sub_item = QStandardItem()
-        sub_item.setText(material.get_name())
-        sub_item.setCheckable(True)
-        sub_item.setEditable(False)
+        sub_item = create_new_item(material.get_name())
         item.appendRow(sub_item)
         for sub_material in material.get_materials():
             MaterialView._get_submaterial_model(sub_material, sub_item)
