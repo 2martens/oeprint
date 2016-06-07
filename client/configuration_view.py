@@ -3,7 +3,8 @@ from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtWidgets import QListView, QWidget, QBoxLayout, QSpinBox, QFormLayout, QPushButton, QLabel
 
 from client.data import DataStorage, Configuration
-from client.helper.model_helper import create_new_item
+from client.helper.model_helper import *
+from client.material_view import MaterialView
 
 __author__ = "Jim Martens"
 
@@ -66,7 +67,10 @@ class ConfigurationView(QWidget):
         current_config = configurations[current_config_name]
         self._show_detail_view(current_config)
         # TODO update material view
-
+        if is_checked(selected_item):
+            for material in current_config.get_materials():
+                item = MaterialView._get_material_model().findItems(material.get_name())[0]
+                check_item(item)
 
     def _create_detail_view(self):
         """

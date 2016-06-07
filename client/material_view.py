@@ -2,7 +2,7 @@ from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtWidgets import QWidget, QBoxLayout, QTreeView, QLabel, QFormLayout
 
 from client.data import DataStorage, Material
-from client.helper.model_helper import create_new_item
+from client.helper.model_helper import *
 
 __author__ = "Jim Martens"
 
@@ -11,6 +11,7 @@ class MaterialView(QWidget):
     """
     Displays the material view.
     """
+    _material_model = None
 
     def __init__(self, parent=None):
         super(QWidget, self).__init__(parent)
@@ -18,8 +19,7 @@ class MaterialView(QWidget):
         self.setLayout(self._layout)
         # initialize tree view
         self._treeView = QTreeView()
-        self._material_model = self._get_material_model()
-        self._treeView.setModel(self._material_model)
+        self._treeView.setModel(self._get_material_model())
         # initialize detail view
         self._detailView = QWidget()
         self._detailLayout = QBoxLayout(QBoxLayout.TopToBottom)
@@ -42,19 +42,20 @@ class MaterialView(QWidget):
 
     @staticmethod
     def _get_material_model():
-        data = DataStorage()
-        materials = data.get_materials()
-        model = QStandardItemModel()
-        for name in materials:
-            material = materials[name]
-            item = create_new_item(name)
-            sub_materials = material.get_materials()
-            for sub_material in sub_materials:
-                MaterialView._get_submaterial_model(sub_material, item)
+        if MaterialView._material_model is None:
+            data = DataStorage()
+            materials = data.get_materials()
+            model = QStandardItemModel()
+            for name in materials:
+                material = materials[name]
+                item = create_new_item(name)
+                sub_materials = material.get_materials()
+                for sub_material in sub_materials:
+                    MaterialView._get_submaterial_model(sub_material, item)
 
-            model.appendRow(item)
-
-        return model
+                model.appendRow(item)
+            MaterialView._material_model = model
+        return MaterialView._material_model
 
     @staticmethod
     def _get_submaterial_model(material, item):
@@ -71,16 +72,13 @@ class MaterialView(QWidget):
         """
         data = DataStorage()
         materials = data.get_materials()
-        selected_item = self._material_model.itemFromIndex(model_index)  # type: QStandardItem
+        selected_item = self._get_material_model().itemFromIndex(model_index)  # type: QStandardItem
         current_material_name = selected_item.text()
         parent_item = selected_item.parent()
         current_material = None
 
         if parent_item is not None:
-            temp = parent_item
-            while temp is not None:
-                temp.setCheckState(2 if self._all_children_are_set(temp) else 0)
-                temp = temp.parent()
+            check_parents(parent_item)
 
             parent_material = data.get_material(parent_item.text())
             sub_materials = parent_material.get_materials()
@@ -91,23 +89,8 @@ class MaterialView(QWidget):
         else:
             current_material = materials[current_material_name]
 
-        self._check_all_children(selected_item)
+        check_all_children(selected_item)
         self._show_detail_view(current_material)
-
-    def _check_all_children(self, parent_item):
-        if parent_item.hasChildren():
-            for row in range(parent_item.rowCount()):
-                child = parent_item.child(row)
-                child.setCheckState(parent_item.checkState())
-                self._check_all_children(child)
-
-    def _all_children_are_set(self, parent_item):
-        if parent_item.hasChildren():
-            for row in range(parent_item.rowCount()):
-                if parent_item.child(row).checkState()==0:
-                    return False
-            return True
-        return False
 
     def _create_detail_view(self):
         """
