@@ -38,8 +38,7 @@ class DataStorage:
             # TODO change this to proper handling of the pages
             new_material = Material(material["name"], material["filename"])
             for sub_material in material["children"]:
-                new_sub_material = Material(sub_material["name"], sub_material["filename"])
-                new_material.add_material(new_sub_material)
+                self._process_submaterial(new_material, sub_material)
             final_materials[new_material.get_name()] = new_material
 
         raw_configurations = self._rawData["configurations"]
@@ -67,6 +66,12 @@ class DataStorage:
         }
 
         return data
+
+    def _process_submaterial(self, new_material, sub_material):
+        new_sub_material = Material(sub_material["name"], sub_material["filename"])
+        new_material.add_material(new_sub_material)
+        for material in sub_material["children"]:
+            self._process_submaterial(new_sub_material, material)
 
     def _load_file(self):
         with open(self._file, 'r', encoding='utf-8') as file:

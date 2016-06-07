@@ -52,15 +52,21 @@ class MaterialView(QWidget):
             item.setEditable(False)
             sub_materials = material.get_materials()
             for sub_material in sub_materials:
-                sub_item = QStandardItem()
-                sub_item.setText(sub_material.get_name())
-                sub_item.setCheckable(True)
-                sub_item.setEditable(False)
-                item.appendRow(sub_item)
+                MaterialView._get_submaterial_model(sub_material, item)
 
             model.appendRow(item)
 
         return model
+
+    @staticmethod
+    def _get_submaterial_model(material, item):
+        sub_item = QStandardItem()
+        sub_item.setText(material.get_name())
+        sub_item.setCheckable(True)
+        sub_item.setEditable(False)
+        item.appendRow(sub_item)
+        for sub_material in material.get_materials():
+            MaterialView._get_submaterial_model(sub_material, sub_item)
 
     def _on_selection_change(self, model_index):
         """
