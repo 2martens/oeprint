@@ -1,7 +1,7 @@
+.idea/
 __pycache__/
+*.pyc
 files/
 files/*/
-*.pyc
 client/config.ini
-.idea/
 client/data.json
