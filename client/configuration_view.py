@@ -68,7 +68,7 @@ class ConfigurationView(QWidget):
         self._show_detail_view(current_config)
         if is_checked(selected_item):
             for material in current_config.get_materials():
-                item = MaterialView._get_material_model().findItems(material.get_name())[0]
+                item = get_item(MaterialView._get_material_model(), material.get_name())
                 check_item(item)
 
     def _create_detail_view(self):

@@ -34,7 +34,7 @@ class DataStorage:
                 return result
         return None
 
-    def get_material(self, materials : dict, name):
+    def get_raw_material(self, materials : dict, name):
         for material in materials:
             result = materials[material].get_material(name)
             if result is not None:
@@ -64,7 +64,7 @@ class DataStorage:
             for material in materials:
                 name = material["name"]
                 amount = material["amount"]
-                new_configuration.add_material(self.get_material(final_materials, name), amount)
+                new_configuration.add_material(self.get_raw_material(final_materials, name), amount)
             final_configurations[new_configuration.get_name()] = new_configuration
 
         # second run to process the sub configurations

@@ -21,6 +21,10 @@ def disable_item(item):
     check_all_children(item)
     check_parents(item)
 
+def reset_items(model):
+    for row in range(model.rowCount()):
+        disable_item(model.item(row))
+
 def check_parents(item):
     if item.hasChildren() is False:
         item = item.parent()
@@ -45,3 +49,20 @@ def all_children_are_set(parent_item):
 
 def is_checked(item):
     return item.checkState()==QtCore.Qt.Checked
+
+def get_item(model, name):
+    for row in range(model.rowCount()):
+        item = _dfs(model.item(row), name)
+        if item is not None:
+            return item
+    return None
+
+def _dfs(root, name):
+    if root.text() == name:
+        return root
+    if root.hasChildren():
+        for row in range(root.rowCount()):
+            result = _dfs(root.child(row), name)
+            if result is not None:
+                return result
+    return None

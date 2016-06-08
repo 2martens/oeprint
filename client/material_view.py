@@ -42,7 +42,7 @@ class MaterialView(QWidget):
 
         # add event listener for selection change
         self._treeView.clicked.connect(self._on_selection_change)
-        self._printButton.clicked.connect(self._on_button_press)
+        self._printButton.clicked.connect(self._on_printbutton_press)
 
     @staticmethod
     def _get_material_model():
@@ -50,14 +50,11 @@ class MaterialView(QWidget):
             data = DataStorage()
             materials = data.get_materials()
             model = QStandardItemModel()
-            for name in materials:
-                material = materials[name]
-                item = create_new_item(name)
-                sub_materials = material.get_materials()
-                for sub_material in sub_materials:
-                    MaterialView._get_submaterial_model(sub_material, item)
 
-                model.appendRow(item)
+            parent_item = model.invisibleRootItem()
+            for name in materials:
+                MaterialView._get_submaterial_model(materials[name], parent_item)
+
             MaterialView._material_model = model
         return MaterialView._material_model
 
@@ -96,14 +93,9 @@ class MaterialView(QWidget):
         check_all_children(selected_item)
         self._show_detail_view(current_material)
 
-    def _on_button_press(self):
-        self._resetItems()
+    def _on_printbutton_press(self):
+        reset_items(self._get_material_model())
         pass
-
-    def _resetItems(self):
-        model = self._get_material_model()
-        for row in range(model.rowCount()):
-            disable_item(model.item(row))
 
     def _create_detail_view(self):
         """
