@@ -16,6 +16,11 @@ def check_item(item):
     check_all_children(item)
     check_parents(item)
 
+def disable_item(item):
+    item.setCheckState(QtCore.Qt.Unchecked)
+    check_all_children(item)
+    check_parents(item)
+
 def check_parents(item):
     if item.hasChildren() is False:
         item = item.parent()

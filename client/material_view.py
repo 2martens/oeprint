@@ -1,5 +1,5 @@
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
-from PyQt5.QtWidgets import QWidget, QBoxLayout, QTreeView, QLabel, QFormLayout
+from PyQt5.QtWidgets import QWidget, QBoxLayout, QTreeView, QLabel, QFormLayout, QPushButton
 
 from client.data import DataStorage, Material
 from client.helper.model_helper import *
@@ -28,10 +28,13 @@ class MaterialView(QWidget):
         self._detailPanels = {}
         self._currentDetailPanel = None
 
+        self._printButton = QPushButton("Print")
+
         # add widgets to layout
         self._layout.addWidget(QLabel("List of Materials"))
         self._layout.addWidget(self._treeView)
         self._layout.addWidget(self._detailView)
+        self._layout.addWidget(self._printButton)
 
         self._create_detail_view()
         # hide detail view on start
@@ -39,6 +42,7 @@ class MaterialView(QWidget):
 
         # add event listener for selection change
         self._treeView.clicked.connect(self._on_selection_change)
+        self._printButton.clicked.connect(self._on_button_press)
 
     @staticmethod
     def _get_material_model():
@@ -91,6 +95,15 @@ class MaterialView(QWidget):
 
         check_all_children(selected_item)
         self._show_detail_view(current_material)
+
+    def _on_button_press(self):
+        self._resetItems()
+        pass
+
+    def _resetItems(self):
+        model = self._get_material_model()
+        for row in range(model.rowCount()):
+            disable_item(model.item(row))
 
     def _create_detail_view(self):
         """

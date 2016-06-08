@@ -34,6 +34,13 @@ class DataStorage:
                 return result
         return None
 
+    def get_material(self, materials : dict, name):
+        for material in materials:
+            result = materials[material].get_material(name)
+            if result is not None:
+                return result
+        return None
+
     def _process_data(self) -> dict:
         """
         Processes the raw JSON data and transforms it into Python objects.
@@ -55,7 +62,9 @@ class DataStorage:
             new_configuration = Configuration(configuration["name"])
             materials = configuration["materials"]
             for material in materials:
-                new_configuration.add_material(final_materials[material["name"]], material["amount"])
+                name = material["name"]
+                amount = material["amount"]
+                new_configuration.add_material(self.get_material(final_materials, name), amount)
             final_configurations[new_configuration.get_name()] = new_configuration
 
         # second run to process the sub configurations

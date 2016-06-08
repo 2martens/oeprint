@@ -49,7 +49,7 @@ class ConfigurationView(QWidget):
         model = QStandardItemModel()
 
         for name in configurations:
-            item = create_new_item(name);
+            item = create_new_item(name)
             model.appendRow(item)
 
         return model
@@ -66,7 +66,6 @@ class ConfigurationView(QWidget):
         current_config_name = selected_item.text()
         current_config = configurations[current_config_name]
         self._show_detail_view(current_config)
-        # TODO update material view
         if is_checked(selected_item):
             for material in current_config.get_materials():
                 item = MaterialView._get_material_model().findItems(material.get_name())[0]
