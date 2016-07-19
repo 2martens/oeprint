@@ -1,5 +1,5 @@
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
-from PyQt5.QtWidgets import QWidget, QBoxLayout, QTreeView, QLabel, QFormLayout, QPushButton
+from PyQt5.QtWidgets import QWidget, QBoxLayout, QTreeView, QLabel, QFormLayout, QPushButton, QTreeWidget
 
 from client.data import DataStorage, Material
 from client.helper.model_helper import *
@@ -20,9 +20,11 @@ class MaterialView(QWidget):
         self._layout = QBoxLayout(QBoxLayout.TopToBottom)
         self.setLayout(self._layout)
         # initialize tree view
-        self._treeView = QTreeView()
-        self._treeView.setModel(self._get_material_model())
-        self._treeView.header().hide()
+        self._treeWidget = QTreeWidget()
+        # self._treeWidget.setModel(self._get_material_model())
+        self._treeWidget.setColumnCount(2)
+        self._treeWidget.header().hide()
+        self._initialize_model()
         # initialize detail view
         self._detailView = QWidget()
         self._detailLayout = QBoxLayout(QBoxLayout.TopToBottom)
@@ -35,7 +37,7 @@ class MaterialView(QWidget):
 
         # add widgets to layout
         self._layout.addWidget(QLabel("List of Materials"))
-        self._layout.addWidget(self._treeView)
+        self._layout.addWidget(self._treeWidget)
         self._layout.addWidget(self._detailView)
         self._layout.addWidget(self._printButton)
 
@@ -44,30 +46,29 @@ class MaterialView(QWidget):
         self._detailView.hide()
 
         # add event listener for selection change
-        self._treeView.selectionModel().currentChanged.connect(self._on_selection_change)
-        self._treeView.clicked.connect(self._on_selection_change)
+        self._treeWidget.selectionModel().currentChanged.connect(self._on_selection_change)
+        self._treeWidget.clicked.connect(self._on_selection_change)
         self._printButton.clicked.connect(self._on_printbutton_press)
 
     @staticmethod
-    def _get_material_model():
-        if MaterialView._material_model is None:
-            data = DataStorage()
-            materials = data.get_materials()
-            model = QStandardItemModel()
-
-            parent_item = model.invisibleRootItem()
-            for name in materials:
-                MaterialView._get_submaterial_model(materials[name], parent_item)
-
-            MaterialView._material_model = model
+    def get_model():
         return MaterialView._material_model
 
+    def _initialize_model(self):
+        data = DataStorage()
+        materials = data.get_materials()
+
+        for name in materials:
+            MaterialView._add_material(materials[name], self._treeWidget)
+
+        if MaterialView._material_model is None:
+            MaterialView._material_model = self._treeWidget
+
     @staticmethod
-    def _get_submaterial_model(material, item):
-        sub_item = create_new_item(material.get_name())
-        item.appendRow(sub_item)
+    def _add_material(material, item):
+        sub_item = create_new_tree_item(material.get_name(), item)
         for sub_material in material.get_materials():
-            MaterialView._get_submaterial_model(sub_material, sub_item)
+            MaterialView._add_material(sub_material, sub_item)
 
     def _on_selection_change(self, model_index):
         """
@@ -77,24 +78,24 @@ class MaterialView(QWidget):
         """
         data = DataStorage()
         materials = data.get_materials()
-        selected_item = self._get_material_model().itemFromIndex(model_index)  # type: QStandardItem
-        current_material_name = selected_item.text()
+        selected_item = self._treeWidget.itemFromIndex(model_index)  # type: QTreeWidgetItem
+        current_material_name = selected_item.text(0)
         parent_item = selected_item.parent()
         current_material = None
 
         if parent_item is not None:
-            check_parents(parent_item)
+            check_parents_tree(parent_item)
 
-            parent_material = data.get_material(parent_item.text())
+            parent_material = data.get_material(parent_item.text(0))
             sub_materials = parent_material.get_materials()
             for sub_material in sub_materials:
-                if sub_material.get_name() == selected_item.text():
+                if sub_material.get_name() == selected_item.text(0):
                     current_material = sub_material
                     break
         else:
             current_material = materials[current_material_name]
 
-        check_all_children(selected_item)
+        check_all_children_tree(selected_item)
         self._show_detail_view(current_material)
 
     def _on_printbutton_press(self):

@@ -49,7 +49,7 @@ class ConfigurationView(QWidget):
         model = QStandardItemModel()
 
         for name in configurations:
-            item = create_new_item(name)
+            item = create_new_list_item(name)
             model.appendRow(item)
 
         return model
@@ -66,9 +66,9 @@ class ConfigurationView(QWidget):
         current_config_name = selected_item.text()
         current_config = configurations[current_config_name]
         self._show_detail_view(current_config)
-        if is_checked(selected_item):
+        if is_checked_list(selected_item):
             for material in current_config.get_materials():
-                item = get_item(MaterialView._get_material_model(), material.get_name())
+                item = get_item(MaterialView.get_model().invisibleRootItem(), material.get_name())
                 check_item(item)
 
     def _create_detail_view(self):
