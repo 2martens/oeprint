@@ -22,6 +22,7 @@ class MaterialView(QWidget):
         # initialize tree view
         self._treeView = QTreeView()
         self._treeView.setModel(self._get_material_model())
+        self._treeView.header().hide()
         # initialize detail view
         self._detailView = QWidget()
         self._detailLayout = QBoxLayout(QBoxLayout.TopToBottom)
