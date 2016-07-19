@@ -44,7 +44,7 @@ class MaterialView(QWidget):
         self._detailView.hide()
 
         # add event listener for selection change
-        self._treeView.clicked.connect(self._on_selection_change)
+        self._treeView.selectionModel().currentChanged.connect(self._on_selection_change)
         self._printButton.clicked.connect(self._on_printbutton_press)
 
     @staticmethod
@@ -68,11 +68,13 @@ class MaterialView(QWidget):
         for sub_material in material.get_materials():
             MaterialView._get_submaterial_model(sub_material, sub_item)
 
-    def _on_selection_change(self, model_index):
+    def _on_selection_change(self, model_index, prev_model_index):
         """
         Called on selecting a new item in the treeView.
         :param model_index: index of selected item
         :type model_index: QModelIndex
+        :param prev_model_index: index of previously selected item
+        :type prev_model_index: QModelIndex
         """
         data = DataStorage()
         materials = data.get_materials()
