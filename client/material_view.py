@@ -131,7 +131,6 @@ class MaterialView(QWidget):
 
             # panel
             layout.addRow("Filename", QLabel(material.get_filename()))
-            # TODO transform list into range (if multiple pages)
             pages = material.get_pages()
             if pages is not None:
                 ranges = list(self._determine_ranges(pages))
