@@ -4,6 +4,8 @@ from PyQt5.QtWidgets import QWidget, QBoxLayout, QTreeView, QLabel, QFormLayout,
 from client.data import DataStorage, Material
 from client.helper.model_helper import *
 
+import itertools
+
 __author__ = "Jim Martens"
 
 
@@ -130,6 +132,40 @@ class MaterialView(QWidget):
             # panel
             layout.addRow("Filename", QLabel(material.get_filename()))
             # TODO transform list into range (if multiple pages)
-            # layout.addRow("Page(s)", QLabel(material.get_pages()))
+            pages = material.get_pages()
+            if pages is not None:
+                ranges = list(self._determine_ranges(pages))
+                page_string = self._format_ranges(ranges)
+                layout.addRow("Page(s)", QLabel(page_string))
 
         self._detailView.show()
+
+    @staticmethod
+    def _determine_ranges(source: list):
+        """
+        Determines the existing ranges in the list of pages.
+        :param source:
+        :type source: list
+        """
+        for a, b in itertools.groupby(enumerate(source), lambda x: x[1] - x[0]):
+            b = list(b)
+            yield b[0][1], b[-1][1]
+
+    @staticmethod
+    def _format_ranges(ranges: list):
+        """
+        Formats the list of ranges into a nice string.
+        :param ranges:
+        :type ranges: list
+        :return: string
+        """
+        returnString = ""
+        for lowerBound, upperBound in ranges:
+            if returnString:
+                returnString += ", "
+            if (lowerBound == upperBound):
+                returnString += str(lowerBound)
+            else:
+                returnString += str(lowerBound) + "-" + str(upperBound)
+
+        return returnString

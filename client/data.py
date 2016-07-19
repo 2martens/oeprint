@@ -49,7 +49,6 @@ class DataStorage:
         final_materials = {}
 
         for material in raw_materials:
-            # TODO change this to proper handling of the pages
             new_material = Material(material["name"], material["filename"])
             for sub_material in material["children"]:
                 self._process_submaterial(new_material, sub_material)
@@ -84,7 +83,7 @@ class DataStorage:
         return data
 
     def _process_submaterial(self, new_material, sub_material):
-        new_sub_material = Material(sub_material["name"], sub_material["filename"])
+        new_sub_material = Material(sub_material["name"], sub_material["filename"], sub_material["pages"])
         new_material.add_material(new_sub_material)
         for material in sub_material["children"]:
             self._process_submaterial(new_sub_material, material)
