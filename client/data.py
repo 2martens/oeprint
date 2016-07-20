@@ -27,6 +27,20 @@ class DataStorage:
         """
         return self._processedData.get("materials")
 
+    def get_material(self, name):
+        for material in self._processedData.get("materials"):
+            result = self._processedData.get("materials")[material].get_material(name)
+            if result is not None:
+                return result
+        return None
+
+    def get_raw_material(self, materials : dict, name):
+        for material in materials:
+            result = materials[material].get_material(name)
+            if result is not None:
+                return result
+        return None
+
     def _process_data(self) -> dict:
         """
         Processes the raw JSON data and transforms it into Python objects.
@@ -35,11 +49,9 @@ class DataStorage:
         final_materials = {}
 
         for material in raw_materials:
-            # TODO change this to proper handling of the pages
             new_material = Material(material["name"], material["filename"])
             for sub_material in material["children"]:
-                new_sub_material = Material(sub_material["name"], sub_material["filename"])
-                new_material.add_material(new_sub_material)
+                self._process_submaterial(new_material, sub_material)
             final_materials[new_material.get_name()] = new_material
 
         raw_configurations = self._rawData["configurations"]
@@ -49,7 +61,9 @@ class DataStorage:
             new_configuration = Configuration(configuration["name"])
             materials = configuration["materials"]
             for material in materials:
-                new_configuration.add_material(final_materials[material["name"]], material["amount"])
+                name = material["name"]
+                amount = material["amount"]
+                new_configuration.add_material(self.get_raw_material(final_materials, name), amount)
             final_configurations[new_configuration.get_name()] = new_configuration
 
         # second run to process the sub configurations
@@ -67,6 +81,12 @@ class DataStorage:
         }
 
         return data
+
+    def _process_submaterial(self, new_material, sub_material):
+        new_sub_material = Material(sub_material["name"], sub_material["filename"], sub_material["pages"])
+        new_material.add_material(new_sub_material)
+        for material in sub_material["children"]:
+            self._process_submaterial(new_sub_material, material)
 
     def _load_file(self):
         with open(self._file, 'r', encoding='utf-8') as file:
@@ -234,6 +254,15 @@ class Material:
         Returns the child materials.
         """
         return self._materials
+
+    def get_material(self, name):
+        if self._name == name:
+            return self
+        for material in self.get_materials():
+            result = material.get_material(name)
+            if result is not None:
+                return result
+        return None
 
     def add_material(self, material: 'Material'):
         """

@@ -7,9 +7,9 @@ __author__ = 'Jim Martens'
 import argparse
 import sys
 
-from config import Config
-from merge import *
-from printing import *
+from server.config import Config
+from server.merge import *
+from server.printing import *
 
 from server.file import *
 
