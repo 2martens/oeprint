@@ -41,6 +41,8 @@ class MaterialView(QWidget):
         self._layout.addWidget(self._detailView)
         self._layout.addWidget(self._printButton)
 
+        self._resize_columns()
+
         self._create_detail_view()
         # hide detail view on start
         self._detailView.hide()
@@ -48,11 +50,17 @@ class MaterialView(QWidget):
         # add event listener for selection change
         self._treeWidget.selectionModel().currentChanged.connect(self._on_selection_change)
         self._treeWidget.clicked.connect(self._on_selection_change)
+        self._treeWidget.expanded.connect(self._resize_columns)
+        self._treeWidget.collapsed.connect(self._resize_columns)
         self._printButton.clicked.connect(self._on_printbutton_press)
 
     @staticmethod
     def get_model():
         return MaterialView._material_model
+
+    def _resize_columns(self):
+        self._treeWidget.resizeColumnToContents(0)
+        self._treeWidget.resizeColumnToContents(1)
 
     def _initialize_model(self):
         data = DataStorage()
