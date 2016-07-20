@@ -23,7 +23,7 @@ class MaterialView(QWidget):
         self._treeWidget = QTreeWidget()
         # self._treeWidget.setModel(self._get_material_model())
         self._treeWidget.setColumnCount(2)
-        self._treeWidget.header().hide()
+        self._treeWidget.setHeaderLabels(["Material name", "Print amount"])
         self._initialize_model()
         # initialize detail view
         self._detailView = QWidget()
