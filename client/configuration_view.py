@@ -88,7 +88,7 @@ class ConfigurationView(QWidget):
             item = get_item(MaterialView.get_model().invisibleRootItem(), material.get_name())
             if item is not None:
                 print_amount = material_print_amounts[material.get_name()]
-                if is_checked_list(selected_item):
+                if is_checked(selected_item):
                     check_item(item)
                     if current_config_name not in self._selected_configs:
                         print_amount += int(item.text(1))
@@ -97,10 +97,10 @@ class ConfigurationView(QWidget):
 
                 item.setText(1, str(print_amount))
 
-        if is_checked_list(selected_item) and current_config_name not in self._selected_configs:
+        if is_checked(selected_item) and current_config_name not in self._selected_configs:
             self._selected_configs[current_config_name] = True
             self._selected_counter += 1
-        if not is_checked_list(selected_item) and current_config_name in self._selected_configs:
+        if not is_checked(selected_item) and current_config_name in self._selected_configs:
             self._selected_configs.pop(current_config_name)
             self._selected_counter -= 1
 
