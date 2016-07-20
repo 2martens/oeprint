@@ -178,7 +178,7 @@ class Configuration:
         """
         return self._materialPrintAmounts
 
-    def get_effective_material_print_amounts(self) -> dict:
+    def get_effective_material_print_amounts(self, config_wide_print_amount=1) -> dict:
         if self._effectiveMaterialPrintAmounts is None:
             self._effectiveMaterialPrintAmounts = self._materialPrintAmounts.copy()
             for config in self._configurations:
@@ -189,6 +189,9 @@ class Configuration:
                         self._effectiveMaterialPrintAmounts[material] += print_amount * effective_print_amounts[material]
                     else:
                         self._effectiveMaterialPrintAmounts[material] = print_amount * effective_print_amounts[material]
+
+        for material in self._effectiveMaterialPrintAmounts:
+            self._effectiveMaterialPrintAmounts[material] *= config_wide_print_amount
 
         return self._effectiveMaterialPrintAmounts
 

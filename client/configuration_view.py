@@ -29,6 +29,8 @@ class ConfigurationView(QWidget):
 
         self._detailPanels = {}
         self._currentDetailPanel = None
+        self._currentConfiguration = None # type: Configuration
+        self._config_wide_print_amounts = {}
 
         # add widgets to layout
         self._layout.addWidget(QLabel("List of Configurations"))
@@ -71,7 +73,8 @@ class ConfigurationView(QWidget):
         current_config_name = selected_item.text()
         current_config = configurations[current_config_name] # type: Configuration
         self._show_detail_view(current_config)
-        material_print_amounts = current_config.get_effective_material_print_amounts()
+        config_wide_print_amount = self._config_wide_print_amounts[current_config_name]
+        material_print_amounts = current_config.get_effective_material_print_amounts(config_wide_print_amount)
 
         if self._selected_counter == 0:
             MaterialView.reset_check_state_and_print_amount()
@@ -96,6 +99,8 @@ class ConfigurationView(QWidget):
             self._selected_configs.pop(current_config_name)
             self._selected_counter -= 1
 
+        self._currentConfiguration = current_config
+
     def _create_detail_view(self):
         """
         Adds the permanent elements to the detail view.
@@ -103,6 +108,15 @@ class ConfigurationView(QWidget):
         edit_button = QPushButton("Edit")
         self._detailLayout.addWidget(QLabel("Detail view for selected configuration"))
         self._detailLayout.addWidget(edit_button)
+
+    def _change_config_wide_print_amount(self, new_value):
+        self._config_wide_print_amounts[self._currentConfiguration.get_name()] = new_value
+
+    def _create_update_function_for_sub_configs(self, sub_config, configuration):
+        def update_func(new_value):
+            if self._currentConfiguration.get_name() == configuration.get_name():
+                self._currentConfiguration.set_config_print_amount(sub_config, new_value)
+        return update_func
 
     def _show_detail_view(self, configuration: Configuration):
         """
@@ -123,12 +137,14 @@ class ConfigurationView(QWidget):
             config_wide_counter = QSpinBox()
             config_wide_counter.setMinimum(1)
             config_wide_counter.setValue(1)
+            config_wide_counter.valueChanged.connect(self._change_config_wide_print_amount)
 
             # add panel to parent layout
             self._detailLayout.addWidget(panel)
             # save panel for future use
             self._detailPanels[configuration.get_name()] = panel
             self._currentDetailPanel = panel
+            self._config_wide_print_amounts[configuration.get_name()] = 1
 
             # panel
             layout.addRow("Print this config x times", config_wide_counter)
@@ -139,6 +155,8 @@ class ConfigurationView(QWidget):
                 config_counter = QSpinBox()
                 config_counter.setMinimum(1)
                 config_counter.setValue(config_print_amounts[config.get_name()])
+                update_func = self._create_update_function_for_sub_configs(config, configuration)
+                config_counter.valueChanged.connect(update_func)
                 layout.addRow("Print config " + config.get_name() + " x times", config_counter)
 
         self._detailView.show()
