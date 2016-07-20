@@ -41,6 +41,7 @@ class ConfigurationView(QWidget):
 
         # add event listener for selection change
         self._listView.clicked.connect(self._on_selection_change)
+        self._listView.selectionModel().currentChanged.connect(self._on_selection_change)
 
     @staticmethod
     def _get_config_model():
