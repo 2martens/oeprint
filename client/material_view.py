@@ -149,8 +149,6 @@ class MaterialView(QWidget):
             layout = QFormLayout()
             panel.setLayout(layout)
 
-            # TODO add counter to tree view
-
             # add panel to parent layout
             self._detailLayout.addWidget(panel)
             # save panel for future use
