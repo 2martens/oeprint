@@ -71,7 +71,7 @@ class ConfigurationView(QWidget):
         current_config_name = selected_item.text()
         current_config = configurations[current_config_name] # type: Configuration
         self._show_detail_view(current_config)
-        material_print_amounts = current_config.get_material_print_amounts()
+        material_print_amounts = current_config.get_effective_material_print_amounts()
 
         if self._selected_counter == 0:
             MaterialView.reset_check_state_and_print_amount()
