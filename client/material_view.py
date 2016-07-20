@@ -13,7 +13,7 @@ class MaterialView(QWidget):
     """
     Displays the material view.
     """
-    _material_model = None
+    _material_model = None # type: QTreeWidget
 
     def __init__(self, parent=None):
         super(QWidget, self).__init__(parent)
@@ -57,6 +57,10 @@ class MaterialView(QWidget):
     @staticmethod
     def get_model():
         return MaterialView._material_model
+
+    @staticmethod
+    def reset_check_state_and_print_amount():
+        reset_items_tree(MaterialView._material_model)
 
     def _resize_columns(self):
         self._treeWidget.resizeColumnToContents(0)

@@ -3,6 +3,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QStandardItem
 
 from PyQt5.QtWidgets import QTreeWidgetItem
+from PyQt5.QtWidgets import QTreeWidget
 
 __author__ = "Tim Kilian"
 
@@ -18,7 +19,7 @@ def create_new_list_item(text):
 def create_new_tree_item(text, parent):
     item = QTreeWidgetItem(parent)
     item.setText(0, text)
-    item.setText(1, str(1))
+    item.setText(1, str(0))
     item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
     item.setCheckState(0, Qt.Unchecked)
     return item
@@ -82,13 +83,36 @@ def reset_items(model):
 # only for QWidgetTreeItems
 def check_item(item):
     """
-    Checks the check state of the item.
+    Checks an item.
     :param item:
     :type item: QTreeWidgetItem
     """
     item.setCheckState(0, QtCore.Qt.Checked)
     check_all_children_tree(item)
     check_parents_tree(item)
+
+
+def reset_item_tree(item):
+    """
+    Resets an item.
+    :param item:
+    :type item: QTreeWidgetItem
+    """
+    item.setCheckState(0, Qt.Unchecked)
+    item.setText(1, str(0))
+    check_all_children_tree(item)
+    check_parents_tree(item)
+
+
+def reset_items_tree(model):
+    """
+    Resets all items.
+    :param model:
+    :type model: QTreeWidget
+    """
+    root_item = model.invisibleRootItem()
+    for child_index in range(root_item.childCount()):
+        reset_item_tree(root_item.child(child_index))
 
 
 def check_parents_tree(item):
@@ -122,10 +146,12 @@ def is_checked_tree(item):
 
 def get_item(root_item, name):
     """
+    Returns the item with given name in tree starting from root_item.
     :param root_item:
     :type root_item: QTreeWidgetItem
     :param name:
     :type name: str
+    :rtype QTreeWidgetItem
     """
     for row in range(root_item.childCount()):
         item = _dfs(root_item.child(row), name)
@@ -135,6 +161,14 @@ def get_item(root_item, name):
 
 
 def _dfs(root, name):
+    """
+    Searches the item with given name in tree starting from root.
+    :param root:
+    :type root: QTreeWidgetItem
+    :param name:
+    :type name: str
+    :rtype: QTreeWidgetItem
+    """
     if root.text(0) == name:
         return root
     if root.childCount() > 0:

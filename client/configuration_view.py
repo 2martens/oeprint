@@ -64,12 +64,17 @@ class ConfigurationView(QWidget):
         configurations = data.get_configurations()
         selected_item = self._configuration_model.itemFromIndex(model_index) # type: QStandardItem
         current_config_name = selected_item.text()
-        current_config = configurations[current_config_name]
+        current_config = configurations[current_config_name] # type: Configuration
         self._show_detail_view(current_config)
-        if is_checked_list(selected_item):
-            for material in current_config.get_materials():
-                item = get_item(MaterialView.get_model().invisibleRootItem(), material.get_name())
-                check_item(item)
+        material_print_amounts = current_config.get_material_print_amounts()
+        MaterialView.reset_check_state_and_print_amount()
+        for material in current_config.get_materials():
+            item = get_item(MaterialView.get_model().invisibleRootItem(), material.get_name())
+            if item is not None:
+                item.setText(1, str(material_print_amounts[material.get_name()]))
+                if is_checked_list(selected_item):
+                    check_item(item)
+
 
     def _create_detail_view(self):
         """
