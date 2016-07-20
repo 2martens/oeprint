@@ -84,6 +84,8 @@ class ConfigurationView(QWidget):
                     check_item(item)
                     if current_config_name not in self._selected_configs:
                         print_amount += int(item.text(1))
+                    else:
+                        print_amount = int(item.text(1))
 
                 item.setText(1, str(print_amount))
 
