@@ -20,7 +20,7 @@ def create_new_tree_item(text, parent):
     item = QTreeWidgetItem(parent)
     item.setText(0, text)
     item.setText(1, str(0))
-    item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
+    item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled | Qt.ItemIsEditable)
     item.setCheckState(0, Qt.Unchecked)
     return item
 

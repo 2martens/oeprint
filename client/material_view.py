@@ -48,6 +48,8 @@ class MaterialView(QWidget):
         self._detailView.hide()
 
         # add event listener for selection change
+        self._treeWidget.setEditTriggers(self._treeWidget.NoEditTriggers)
+        self._treeWidget.itemDoubleClicked.connect(self._check_edit)
         self._treeWidget.selectionModel().currentChanged.connect(self._on_selection_change)
         self._treeWidget.clicked.connect(self._on_selection_change)
         self._treeWidget.expanded.connect(self._resize_columns)
@@ -81,6 +83,17 @@ class MaterialView(QWidget):
         sub_item = create_new_tree_item(material.get_name(), item)
         for sub_material in material.get_materials():
             MaterialView._add_material(sub_material, sub_item)
+
+    def _check_edit(self, item, column):
+        """
+        Checks if the column of the item can be edited.
+        :param item:
+        :type item: QTreeWidgetItem
+        :param column:
+        :type column: number
+        """
+        if column == 1:
+            self._treeWidget.editItem(item, column)
 
     def _on_selection_change(self, model_index):
         """
