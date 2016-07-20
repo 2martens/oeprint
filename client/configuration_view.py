@@ -31,6 +31,7 @@ class ConfigurationView(QWidget):
         self._currentDetailPanel = None
         self._currentConfiguration = None # type: Configuration
         self._config_wide_print_amounts = {}
+        self._recalculateEffectivePrintAmounts = False
 
         # add widgets to layout
         self._layout.addWidget(QLabel("List of Configurations"))
@@ -74,7 +75,11 @@ class ConfigurationView(QWidget):
         current_config = configurations[current_config_name] # type: Configuration
         self._show_detail_view(current_config)
         config_wide_print_amount = self._config_wide_print_amounts[current_config_name]
-        material_print_amounts = current_config.get_effective_material_print_amounts(config_wide_print_amount)
+        material_print_amounts = current_config.get_effective_material_print_amounts(
+            config_wide_print_amount,
+            self._recalculateEffectivePrintAmounts
+        )
+        self._recalculateEffectivePrintAmounts = False
 
         if self._selected_counter == 0:
             MaterialView.reset_check_state_and_print_amount()
@@ -111,11 +116,13 @@ class ConfigurationView(QWidget):
 
     def _change_config_wide_print_amount(self, new_value):
         self._config_wide_print_amounts[self._currentConfiguration.get_name()] = new_value
+        self._recalculateEffectivePrintAmounts = True
 
     def _create_update_function_for_sub_configs(self, sub_config, configuration):
         def update_func(new_value):
             if self._currentConfiguration.get_name() == configuration.get_name():
                 self._currentConfiguration.set_config_print_amount(sub_config, new_value)
+            self._recalculateEffectivePrintAmounts = True
         return update_func
 
     def _show_detail_view(self, configuration: Configuration):

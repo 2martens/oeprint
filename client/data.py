@@ -178,8 +178,8 @@ class Configuration:
         """
         return self._materialPrintAmounts
 
-    def get_effective_material_print_amounts(self, config_wide_print_amount=1) -> dict:
-        if self._effectiveMaterialPrintAmounts is None:
+    def get_effective_material_print_amounts(self, config_wide_print_amount=1, recalculate=False) -> dict:
+        if self._effectiveMaterialPrintAmounts is None or recalculate:
             self._effectiveMaterialPrintAmounts = self._materialPrintAmounts.copy()
             for config in self._configurations:
                 print_amount = self._configPrintAmounts[config.get_name()]
