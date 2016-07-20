@@ -2,3 +2,4 @@
 host=
 [Data]
 file=data.json
+printers=d116_sw,g235_hp
