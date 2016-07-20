@@ -39,6 +39,10 @@ class ConfigurationView(QWidget):
         # hide detail view on start
         self._detailView.hide()
 
+        # selected configs map
+        self._selected_configs = {}
+        self._selected_counter = 0
+
         # add event listener for selection change
         self._listView.clicked.connect(self._on_selection_change)
         self._listView.selectionModel().currentChanged.connect(self._on_selection_change)
@@ -68,14 +72,27 @@ class ConfigurationView(QWidget):
         current_config = configurations[current_config_name] # type: Configuration
         self._show_detail_view(current_config)
         material_print_amounts = current_config.get_material_print_amounts()
-        MaterialView.reset_check_state_and_print_amount()
+
+        if self._selected_counter == 0:
+            MaterialView.reset_check_state_and_print_amount()
+
         for material in current_config.get_materials():
             item = get_item(MaterialView.get_model().invisibleRootItem(), material.get_name())
             if item is not None:
-                item.setText(1, str(material_print_amounts[material.get_name()]))
+                print_amount = material_print_amounts[material.get_name()]
                 if is_checked_list(selected_item):
                     check_item(item)
+                    if current_config_name not in self._selected_configs:
+                        print_amount += int(item.text(1))
 
+                item.setText(1, str(print_amount))
+
+        if is_checked_list(selected_item) and current_config_name not in self._selected_configs:
+            self._selected_configs[current_config_name] = True
+            self._selected_counter += 1
+        if not is_checked_list(selected_item) and current_config_name in self._selected_configs:
+            self._selected_configs.pop(current_config_name)
+            self._selected_counter -= 1
 
     def _create_detail_view(self):
         """
