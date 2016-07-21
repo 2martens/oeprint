@@ -4,3 +4,4 @@ host=
 file=data.json
 printers=d116_sw,g235_hp
 path_to_tool=2016/Drucken/oeprint.py
+path_to_data=2016/Drucken/data.json
