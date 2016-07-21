@@ -81,6 +81,9 @@ def reset_items(model):
 
 
 # only for QWidgetTreeItems
+def is_checked_tree(item):
+    return item.checkState(0) == QtCore.Qt.Checked
+
 def check_item(item):
     """
     Checks an item.

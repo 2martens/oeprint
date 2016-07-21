@@ -66,13 +66,13 @@ class PrintView(QWidget):
         if root_item.childCount() > 0:
             for child_index in range(root_item.childCount()):
                 child = root_item.child(child_index)
-                if is_checked(child):
+                if is_checked_tree(child):
                     print_amounts[child.text(0)] = int(child.text(1))
                 else:
                     child_print_amounts = self._calculate_print_amounts(child)
                     print_amounts.update(child_print_amounts)
 
-        elif is_checked(root_item):
+        elif is_checked_tree(root_item):
             print_amounts[root_item.text(0)] = int(root_item.text(1))
 
         return print_amounts
