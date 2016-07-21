@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QWidget, QBoxLayout, QPushButton
 
 from client.config import Config
 from connection import Connection
+from helper.gui_helper import show_error_alert
 from helper.model_helper import *
 
 __author__ = "Jim Martens"
@@ -48,17 +49,11 @@ class PrintView(QWidget):
         if not result:
             error = connection.get_error_object()
             if error.output is not None:
-                PrintView._show_error_alert(error.output)
+                show_error_alert(error.output)
             else:
-                PrintView._show_error_alert("Something went wrong")
+                show_error_alert("Something went wrong")
         self._printButton.setText("Print")
         self._printButton.setDown(False)
-
-    @staticmethod
-    def _show_error_alert(message):
-        box = QMessageBox()
-        box.setText("Error: " + message)
-        box.exec()
 
     def _calculate_print_amounts(self, root_item):
         """
