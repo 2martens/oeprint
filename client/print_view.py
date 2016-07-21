@@ -47,11 +47,15 @@ class PrintView(QWidget):
         result = connection.send_print_data(print_amounts, printer)
         if not result:
             error = connection.get_error_object()
-            self._show_error_alert(error.output)
+            if error.output is not None:
+                PrintView._show_error_alert(error.output)
+            else:
+                PrintView._show_error_alert("Something went wrong")
         self._printButton.setText("Print")
         self._printButton.setDown(False)
 
-    def _show_error_alert(self, message):
+    @staticmethod
+    def _show_error_alert(message):
         box = QMessageBox()
         box.setText("Error: " + message)
         box.exec()
