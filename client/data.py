@@ -108,6 +108,7 @@ class Configuration:
         self._configPrintAmounts = {}
         self._materials = []
         self._materialPrintAmounts = {}
+        self._effectiveMaterialPrintAmounts = None
 
     def get_name(self) -> str:
         """
@@ -176,6 +177,23 @@ class Configuration:
         :return: print amounts of materials
         """
         return self._materialPrintAmounts
+
+    def get_effective_material_print_amounts(self, config_wide_print_amount=1, recalculate=False) -> dict:
+        if self._effectiveMaterialPrintAmounts is None or recalculate:
+            self._effectiveMaterialPrintAmounts = self._materialPrintAmounts.copy()
+            for config in self._configurations:
+                print_amount = self._configPrintAmounts[config.get_name()]
+                effective_print_amounts = config.get_effective_material_print_amounts()
+                for material in effective_print_amounts:
+                    if material in self._effectiveMaterialPrintAmounts:
+                        self._effectiveMaterialPrintAmounts[material] += print_amount * effective_print_amounts[material]
+                    else:
+                        self._effectiveMaterialPrintAmounts[material] = print_amount * effective_print_amounts[material]
+
+        for material in self._effectiveMaterialPrintAmounts:
+            self._effectiveMaterialPrintAmounts[material] *= config_wide_print_amount
+
+        return self._effectiveMaterialPrintAmounts
 
     def add_material(self, material: 'Material', print_amount: int = 1):
         """

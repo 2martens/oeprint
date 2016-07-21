@@ -1,10 +1,11 @@
-from PyQt5.QtGui import QStandardItemModel, QStandardItem
-from PyQt5.QtWidgets import QWidget, QBoxLayout, QTreeView, QLabel, QFormLayout, QPushButton, QTreeWidget
+from PyQt5.QtWidgets import QWidget, QBoxLayout, QLabel, QFormLayout, QTreeWidget
 
 from client.data import DataStorage, Material
 from client.helper.model_helper import *
+from client.print_view import PrintView
 
 import itertools
+
 
 __author__ = "Jim Martens"
 
@@ -29,17 +30,18 @@ class MaterialView(QWidget):
         self._detailView = QWidget()
         self._detailLayout = QBoxLayout(QBoxLayout.TopToBottom)
         self._detailView.setLayout(self._detailLayout)
+        # initialize print view
+        self._print_view = PrintView()
+        self._print_view.set_parent_model(self._treeWidget)
 
         self._detailPanels = {}
         self._currentDetailPanel = None
-
-        self._printButton = QPushButton("Print")
 
         # add widgets to layout
         self._layout.addWidget(QLabel("List of Materials"))
         self._layout.addWidget(self._treeWidget)
         self._layout.addWidget(self._detailView)
-        self._layout.addWidget(self._printButton)
+        self._layout.addWidget(self._print_view)
 
         self._resize_columns()
 
@@ -54,7 +56,6 @@ class MaterialView(QWidget):
         self._treeWidget.clicked.connect(self._on_selection_change)
         self._treeWidget.expanded.connect(self._resize_columns)
         self._treeWidget.collapsed.connect(self._resize_columns)
-        self._printButton.clicked.connect(self._on_printbutton_press)
 
     @staticmethod
     def get_model():
@@ -123,10 +124,6 @@ class MaterialView(QWidget):
         check_all_children_tree(selected_item)
         self._show_detail_view(current_material)
 
-    def _on_printbutton_press(self):
-        reset_items(self._get_material_model())
-        pass
-
     def _create_detail_view(self):
         """
         Adds the permanent elements to the detail view.
@@ -148,8 +145,6 @@ class MaterialView(QWidget):
             panel = QWidget()
             layout = QFormLayout()
             panel.setLayout(layout)
-
-            # TODO add counter to tree view
 
             # add panel to parent layout
             self._detailLayout.addWidget(panel)

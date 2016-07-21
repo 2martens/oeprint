@@ -63,7 +63,7 @@ def all_children_are_set_list(parent_item):
     return False
 
 
-def is_checked_list(item):
+def is_checked(item):
     return item.checkState() == QtCore.Qt.Checked
 
 
