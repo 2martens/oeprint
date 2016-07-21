@@ -7,6 +7,8 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QMenuBar, QMenu,
 from client.config import ConfigDialog
 from client.configuration_view import ConfigurationView
 from client.material_view import MaterialView
+from client.config import Config
+from client.connection import Connection
 
 
 class Main:
@@ -17,6 +19,16 @@ class Main:
         self.__application.setApplicationName('OE Printtool Client')
         self.__mainWindow = QMainWindow()
         self.__mainWindow.setWindowTitle('OE Printtool Client')
+
+        # ensures that there is data before continuing
+        self._connection = Connection()
+        self._config = Config()
+        try:
+            with open(self._config.get("Data", "file"), 'r'):
+                pass
+        except FileNotFoundError:
+            self._connection.synchronize_data()
+
         # set up main window
         self.__contentPane = self.__create_content_pane()
         self.__menuBar = self.__create_menu_bar()
@@ -60,6 +72,8 @@ class Main:
         # edit menu
         edit_menu = QMenu('&Edit', menu_bar)
         config_dialog = ConfigDialog(self.__mainWindow)
+        resync_action = edit_menu.addAction('&Synchronize with server')
+        resync_action.triggered.connect(self._connection.synchronize_data)
         preferences_action = edit_menu.addAction('&Preferences')
         preferences_action.triggered.connect(config_dialog.show)
 

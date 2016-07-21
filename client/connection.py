@@ -1,5 +1,5 @@
 import json
-from subprocess import check_call, CalledProcessError
+from subprocess import call, check_call, CalledProcessError
 
 from client.config import Config
 
@@ -13,7 +13,9 @@ class Connection:
     def __init__(self):
         config = Config()
         self._sshHost = config.get("SSH", "host")
+        self._dataFile = config.get("Data", "file")
         self._pathToTool = config.get("Data", "path_to_tool")
+        self._pathToData = config.get("Data", "path_to_data")
         self._errorObject = None # type: CalledProcessError
 
     def get_error_object(self):
@@ -35,6 +37,19 @@ class Connection:
         }
         json_data = json.dumps(data)
         return self._send_to_server("print", json_data)
+
+    def synchronize_data(self):
+        """
+        Synchronizes the data.json with the authoritative server version.
+        :return: Returns True on success, False otherwise
+        :rtype: bool
+        """
+        try:
+            check_call(["scp", self._sshHost + ":" + self._pathToData, self._dataFile])
+            return True
+        except CalledProcessError as cpe:
+            self._errorObject = cpe
+            return False
 
     def _send_to_server(self, command, data):
         """
