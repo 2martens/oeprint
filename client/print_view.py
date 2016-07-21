@@ -1,7 +1,8 @@
-from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem, QComboBox, QLabel, QFormLayout
+from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem, QComboBox, QLabel, QFormLayout, QMessageBox
 from PyQt5.QtWidgets import QWidget, QBoxLayout, QPushButton
 
 from client.config import Config
+from connection import Connection
 from helper.model_helper import *
 
 __author__ = "Jim Martens"
@@ -40,7 +41,20 @@ class PrintView(QWidget):
         """
         print_amounts = self._calculate_print_amounts(self._model.invisibleRootItem())
         printer = self._printerSelection.currentText()
-        # TODO implement synching with server
+        connection = Connection()
+        self._printButton.setText("Printing...")
+        self._printButton.setDown(True)
+        result = connection.send_print_data(print_amounts, printer)
+        if not result:
+            error = connection.get_error_object()
+            self._show_error_alert(error.output)
+        self._printButton.setText("Print")
+        self._printButton.setDown(False)
+
+    def _show_error_alert(self, message):
+        box = QMessageBox()
+        box.setText("Error: " + message)
+        box.exec()
 
     def _calculate_print_amounts(self, root_item):
         """
