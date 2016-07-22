@@ -30,11 +30,13 @@ class Main:
             self._connection.synchronize_data()
 
         # set up main window
+        self.__configurationView = None # type: ConfigurationView
         self.__contentPane = self.__create_content_pane()
         self.__menuBar = self.__create_menu_bar()
         self.__mainWindow.setCentralWidget(self.__contentPane)
         self.__mainWindow.setMenuBar(self.__menuBar)
         self.__mainWindow.show()
+        self.__configurationView.select_first_item()
         self.__returnCode = self.__application.exec()
 
     def return_code(self):
@@ -51,8 +53,8 @@ class Main:
         layout = QBoxLayout(QBoxLayout.LeftToRight)
         content_pane.setLayout(layout)
         # add configuration view
-        configuration_view = ConfigurationView()
-        layout.addWidget(configuration_view)
+        self.__configurationView = ConfigurationView()
+        layout.addWidget(self.__configurationView)
         # add material view
         material_view = MaterialView()
         layout.addWidget(material_view)

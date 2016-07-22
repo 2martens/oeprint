@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QModelIndex
+from PyQt5.QtCore import QModelIndex, QRect, QItemSelectionModel
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtWidgets import QListView, QWidget, QBoxLayout, QSpinBox, QFormLayout, QPushButton, QLabel
 
@@ -49,6 +49,10 @@ class ConfigurationView(QWidget):
         # add event listener for selection change
         self._listView.clicked.connect(self._on_selection_change)
         self._listView.selectionModel().currentChanged.connect(self._on_selection_change)
+
+    def select_first_item(self):
+        rect = QRect(0,0,1,1)
+        self._listView.setSelection(rect, QItemSelectionModel.Select)
 
     @staticmethod
     def _get_config_model():
