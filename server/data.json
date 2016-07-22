@@ -1,0 +1,276 @@
+{
+  "configurations": [
+    {
+      "name": "gruppe11",
+      "materials": [
+        {
+          "name": "namensliste",
+          "amount": 1
+        },
+        {
+          "name": "stundenplan_leer",
+          "amount": 10
+        },
+        {
+          "name": "stundenplan_gruppe11",
+          "amount": 12
+        }
+      ],
+      "configurations": []
+    },
+    {
+      "name": "infozentrale",
+      "materials": [
+        {
+          "name": "stundenplan_alle_gruppen",
+          "amount": 2
+        },
+        {
+          "name": "stundenplan_alle_tage",
+          "amount": 1
+        }
+      ],
+      "configurations": []
+    }
+  ],
+  "materials": [
+    {
+      "name": "namensliste",
+      "filename": "Material/Studienberatung/namensliste.pdf",
+      "children": []
+    },
+    {
+      "name": "stundenplan_leer",
+      "filename": "Material/Studienberatung/Stundenplan_LEER.pdf",
+      "children": []
+    },
+    {
+      "name": "stundenplan_alle_gruppen",
+      "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+      "children": [
+        {
+          "name": "stundenplan_gruppe1",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [1],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe2",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [2],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe3",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [3],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe4",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [4],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe5",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [5],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe6",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [6],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe7",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [7],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe8",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [8],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe9",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [9],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe10",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [10],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe11",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [11],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe12",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [12],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe13",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [13],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe14",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [14],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe15",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [15],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe16",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [16],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe17",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [17],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe18",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [18],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe19",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [19],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe20",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [20],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe21",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [21],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe22",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [22],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe23",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [23],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe24",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [24],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe25",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [25],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe26",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [26],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe27",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [27],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe28",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [28],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe29",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [29],
+          "children": []
+        },
+        {
+          "name": "stundenplan_gruppe30",
+          "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
+          "pages": [30],
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "stundenplan_alle_tage",
+      "filename": "Material/Stundenplan/tagesplan2Seiten.pdf",
+      "children": [
+        {
+          "name": "stundenplan_freitag1",
+          "filename": "Material/Stundenplan/tagesplan2Seiten.pdf",
+          "pages": [1,2],
+          "children": []
+        },
+        {
+          "name": "stundenplan_montag",
+          "filename": "Material/Stundenplan/tagesplan2Seiten.pdf",
+          "pages": [3,4],
+          "children": []
+        },
+        {
+          "name": "stundenplan_dienstag",
+          "filename": "Material/Stundenplan/tagesplan2Seiten.pdf",
+          "pages": [5,6],
+          "children": []
+        },
+        {
+          "name": "stundenplan_mittwoch",
+          "filename": "Material/Stundenplan/tagesplan2Seiten.pdf",
+          "pages": [7,8],
+          "children": []
+        },
+        {
+          "name": "stundenplan_donnerstag",
+          "filename": "Material/Stundenplan/tagesplan2Seiten.pdf",
+          "pages": [9,10],
+          "children": []
+        },
+        {
+          "name": "stundenplan_freitag2",
+          "filename": "Material/Stundenplan/tagesplan2Seiten.pdf",
+          "pages": [11,12],
+          "children": []
+        }
+      ]
+    }
+  ]
+}
