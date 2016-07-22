@@ -6,6 +6,9 @@ import argparse
 import hashlib
 import json
 
+from merge import merge_pdf_files
+from printing import print_merged_file
+
 __author__ = 'Jim Martens'
 
 
@@ -34,17 +37,42 @@ def print_documents(data):
     :type data: str
     """
     hash_object = hashlib.sha256(data.encode())
-    hash = hash_object.hexdigest()
-    hashed_filename = hash + '.pdf'
+    hash_str = hash_object.hexdigest()
+    hashed_filename = hash_str + '.pdf'
+    decoded_data = json.loads(data)
 
     try:
-        with open('build/' + hashed_filename, 'r', encoding='utf-8') as pdf:
+        with open('build/' + hashed_filename, 'r', encoding='utf-8'):
             pass
-        # print pdf directly
+        print_merged_file(decoded_data['printer'], 'build/' + hashed_filename)
     except FileNotFoundError:
         # build pdf
-        decoded_data = json.loads(data)
         with open('data.json', 'r', encoding='utf-8') as file:
             config_data = json.load(file)
             materials = config_data['materials']
-            # determine material files and merge them,save resulting pdf in build dir
+            processed_materials = process_materials(materials)
+            print_amounts = decoded_data['amounts']
+
+            merge_data = []
+            for material_name in print_amounts:
+                material = processed_materials[material_name]
+                amount = print_amounts[material_name]
+                merge_data.append({
+                    'material': material,
+                    'amount': amount
+                })
+
+            merge_pdf_files('build/' + hashed_filename, merge_data)
+            print_merged_file(decoded_data['printer'], 'build/' + hashed_filename)
+
+
+def process_materials(materials):
+    processed_materials = {}
+    for material in materials:
+        processed_materials[material['name']] = material
+        children = material['children']
+        if children:
+            sub_materials = process_materials(children)
+            processed_materials.update(sub_materials)
+
+    return processed_materials
