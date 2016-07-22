@@ -1,8 +1,7 @@
 """printing.py; Provides functionality for printing"""
+from subprocess import call
 
 __author__ = 'Jim Martens'
-
-from subprocess import call
 
 
 def print_files(printer, files):
