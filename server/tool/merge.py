@@ -1,7 +1,7 @@
 """merge.py: Provides functionality to merge PDF files"""
 import itertools
 
-from server.pypdf2.PyPDF2 import PdfFileReader, PdfFileMerger
+from tool.pypdf2.PyPDF2 import PdfFileReader, PdfFileMerger
 
 __author__ = 'Jim Martens'
 

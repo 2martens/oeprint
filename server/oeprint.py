@@ -6,8 +6,8 @@ import argparse
 import hashlib
 import json
 
-from merge import merge_pdf_files
-from printing import print_merged_file
+from tool.merge import merge_pdf_files
+from tool.printing import print_merged_file
 
 __author__ = 'Jim Martens'
 
