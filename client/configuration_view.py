@@ -57,10 +57,10 @@ class ConfigurationView(QWidget):
     @staticmethod
     def _get_config_model():
         data = DataStorage()
-        configurations = data.get_configurations()
+        configurations_order = data.get_configurations_order()
         model = QStandardItemModel()
 
-        for name in configurations:
+        for name in configurations_order:
             item = create_new_list_item(name)
             model.appendRow(item)
 

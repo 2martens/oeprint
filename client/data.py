@@ -21,11 +21,23 @@ class DataStorage:
         """
         return self._processedData.get("configurations")
 
+    def get_configurations_order(self) -> list:
+        """
+        Returns the ordered list of configuration names.
+        """
+        return self._processedData.get("configurations_order")
+
     def get_materials(self) -> dict:
         """
         Returns the materials.
         """
         return self._processedData.get("materials")
+
+    def get_materials_order(self) -> list:
+        """
+        Returns the ordered list of material names.
+        """
+        return self._processedData.get("materials_order")
 
     def get_material(self, name):
         for material in self._processedData.get("materials"):
@@ -47,15 +59,18 @@ class DataStorage:
         """
         raw_materials = self._rawData["materials"]
         final_materials = {}
+        final_materials_order = []
 
         for material in raw_materials:
             new_material = Material(material["name"], material["filename"])
             for sub_material in material["children"]:
                 self._process_submaterial(new_material, sub_material)
             final_materials[new_material.get_name()] = new_material
+            final_materials_order.append(new_material.get_name())
 
         raw_configurations = self._rawData["configurations"]
         final_configurations = {}
+        final_configurations_order = []
 
         for configuration in raw_configurations:
             new_configuration = Configuration(configuration["name"])
@@ -65,6 +80,7 @@ class DataStorage:
                 amount = material["amount"]
                 new_configuration.add_material(self.get_raw_material(final_materials, name), amount)
             final_configurations[new_configuration.get_name()] = new_configuration
+            final_configurations_order.append(new_configuration.get_name())
 
         # second run to process the sub configurations
         for configuration in raw_configurations:
@@ -77,7 +93,9 @@ class DataStorage:
 
         data = {
             "configurations": final_configurations,
-            "materials": final_materials
+            "configurations_order": final_configurations_order,
+            "materials": final_materials,
+            "materials_order": final_materials_order
         }
 
         return data

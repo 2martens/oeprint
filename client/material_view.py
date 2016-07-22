@@ -72,8 +72,9 @@ class MaterialView(QWidget):
     def _initialize_model(self):
         data = DataStorage()
         materials = data.get_materials()
+        materials_order = data.get_materials_order()
 
-        for name in materials:
+        for name in materials_order:
             MaterialView._add_material(materials[name], self._treeWidget)
 
         if MaterialView._material_model is None:
