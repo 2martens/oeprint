@@ -105,6 +105,10 @@ def reset_item_tree(item):
     item.setText(1, str(0))
     check_all_children_tree(item)
     check_parents_tree(item)
+    if item.childCount() > 0:
+        for row in range(item.childCount()):
+            child = item.child(row)
+            reset_item_tree(child)
 
 
 def reset_items_tree(model):
