@@ -2,66 +2,77 @@
 
 """oeprint.py: The main file of the print tool"""
 
-__author__ = 'Jim Martens'
-
 import argparse
-import sys
+import hashlib
+import json
 
-from server.config import Config
-from server.merge import *
-from server.printing import *
+from tool.merge import merge_pdf_files
+from tool.printing import print_merged_file
 
-from server.file import *
+__author__ = 'Jim Martens'
 
 
 def main():
     """Main function for oeprint"""
-    year = '2015'
-
     parser = argparse.ArgumentParser(description='Printing tool for Orientation Unit')
-    parser.add_argument('build', metavar='build', help='the identifier of the build')
-    parser.add_argument('prints', metavar='numberOfPrints', type=int, help='how often the build is printed')
-    parser.add_argument('--printer', dest='printer', help='a valid printer name like d116_sw', default='e120_hp')
-    parser.add_argument('--merge', dest='merge', type=bool, help='yes if the files should be merged before printing',
-                        default=False)
+    parser.add_argument('command', metavar='command', help='the command', choices=['print', 'save'])
+    parser.add_argument('data', metavar='data', help='the data for the command')
     arguments = parser.parse_args()
-    config = Config('configuration/config.json')
-    build_data = config.load_build(arguments.build)
-    if build_data:
-        build_data['files'] = insert_file_paths(year, 'files', build_data['files'])
-        for i in range(0, arguments.prints):
-            if build_data['files']:
-                if arguments.merge:
-                    merge_pdf_file = 'files/' + arguments.build + '-merge.pdf'
-                    merge_pdf_files(merge_pdf_file, build_data['files'])
-                    print_merged_file(arguments.printer, merge_pdf_file)
-                else:
-                    print_files(arguments.printer, build_data['files'])
-            if build_data['builds']:
-                print_builds(config, year, arguments.printer, build_data['builds'], arguments.merge)
 
-    else:
-        print('Invalid build', file=sys.stderr)
+    if arguments['command'] == 'print':
+        # do printing stuff
+        print_documents(arguments['data'])
+    elif arguments['command'] == 'save':
+        # do saving stuff
+        pass
 
 if __name__ == '__main__':
     main()
 
 
-def print_builds(config, year, printer, builds, use_merge):
+def print_documents(data):
     """
-    Prints builds
-    :type config: config.Config
-    :type year: str
-    :type printer: str
-    :type builds: list
-    :type use_merge: bool
+    Manages the printing.
+    :param data:
+    :type data: str
     """
-    for build in builds:
-        build_data = config.load_build(build)
-        build_data['files'] = insert_file_paths(year, 'files', build_data['files'])
-        if use_merge:
-            merge_pdf_file = 'files/' + build + '-merge.pdf'
-            merge_pdf_files(merge_pdf_file, build_data['files'])
-            print_merged_file(printer, merge_pdf_file)
-        else:
-            print_files(printer, build_data['files'])
+    hash_object = hashlib.sha256(data.encode())
+    hash_str = hash_object.hexdigest()
+    hashed_filename = hash_str + '.pdf'
+    decoded_data = json.loads(data)
+
+    try:
+        with open('build/' + hashed_filename, 'r', encoding='utf-8'):
+            pass
+        print_merged_file(decoded_data['printer'], 'build/' + hashed_filename)
+    except FileNotFoundError:
+        # build pdf
+        with open('data.json', 'r', encoding='utf-8') as file:
+            config_data = json.load(file)
+            materials = config_data['materials']
+            processed_materials = process_materials(materials)
+            print_amounts = decoded_data['amounts']
+
+            merge_data = []
+            for material_name in print_amounts:
+                material = processed_materials[material_name]
+                amount = print_amounts[material_name]
+                merge_data.append({
+                    'material': material,
+                    'amount': amount
+                })
+
+            merge_pdf_files('build/' + hashed_filename, merge_data)
+            print_merged_file(decoded_data['printer'], 'build/' + hashed_filename)
+
+
+def process_materials(materials):
+    processed_materials = {}
+    for material in materials:
+        processed_materials[material['name']] = material
+        children = material['children']
+        if children:
+            sub_materials = process_materials(children)
+            processed_materials.update(sub_materials)
+
+    return processed_materials
