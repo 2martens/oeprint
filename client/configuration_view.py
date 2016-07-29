@@ -2,9 +2,9 @@ from PyQt5.QtCore import QModelIndex, QRect, QItemSelectionModel
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtWidgets import QListView, QWidget, QBoxLayout, QSpinBox, QFormLayout, QPushButton, QLabel
 
-from client.data import DataStorage, Configuration
-from client.helper.model_helper import *
-from client.material_view import MaterialView
+from data import DataStorage, Configuration
+from helper.model_helper import *
+from material_view import MaterialView
 
 __author__ = "Jim Martens"
 

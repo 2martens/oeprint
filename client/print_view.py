@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem, QComboBox, QLabel, QFormLayout, QMessageBox
 from PyQt5.QtWidgets import QWidget, QBoxLayout, QPushButton
 
-from client.config import Config
+from config import Config
 from connection import Connection
 from helper.gui_helper import show_error_alert
 from helper.model_helper import *

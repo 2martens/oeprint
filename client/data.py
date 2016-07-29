@@ -1,6 +1,6 @@
 import json
 
-from client.config import Config
+from config import Config
 
 __author__ = "Jim Martens"
 

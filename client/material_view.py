@@ -1,8 +1,8 @@
 from PyQt5.QtWidgets import QWidget, QBoxLayout, QLabel, QFormLayout, QTreeWidget
 
-from client.data import DataStorage, Material
-from client.helper.model_helper import *
-from client.print_view import PrintView
+from data import DataStorage, Material
+from helper.model_helper import *
+from print_view import PrintView
 
 import itertools
 
