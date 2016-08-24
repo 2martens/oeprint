@@ -44,7 +44,8 @@ class Main:
                 raise
             ssh_message_box = QMessageBox()
             ssh_message_box.setText(
-                'Please enter the SSH host used for the orientation unit directory in the preferences window'
+                'Please enter the SSH host used for the orientation unit directory in the preferences window '
+                '(Edit->Preferences)'
             )
             ssh_message_box.setWindowTitle('SSH Host is missing')
             ssh_message_box.exec()
