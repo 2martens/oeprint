@@ -98,7 +98,7 @@ class Main:
         edit_menu = QMenu('&Edit', menu_bar)
         config_dialog = ConfigDialog(self.__mainWindow)
         resync_action = edit_menu.addAction('&Synchronize with server')
-        resync_action.triggered.connect(self._connection.synchronize_data)
+        resync_action.triggered.connect(self.__synchronize)
         preferences_action = edit_menu.addAction('&Preferences')
         preferences_action.triggered.connect(config_dialog.show)
 
@@ -112,6 +112,12 @@ class Main:
         menu_bar.addMenu(edit_menu)
         menu_bar.addMenu(help_menu)
         return menu_bar
+    
+    def __synchronize(self):
+        self._connection.synchronize_data()
+        if not self._config.get('Data', 'initialized_local_data_file'):
+            self._config.set('Data', 'initialized_local_data_file', 'true')
+            self._config.write()
 
 if __name__ == '__main__':
     main = Main()
