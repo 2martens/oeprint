@@ -5,6 +5,7 @@
 import argparse
 import hashlib
 import json
+import os
 
 from tool.merge import merge_pdf_files
 from tool.printing import print_merged_file
@@ -42,28 +43,44 @@ def print_documents(data):
     decoded_data = json.loads(data)
 
     try:
-        with open('build/' + hashed_filename, 'r', encoding='utf-8'):
+        filename = 'build/' + hashed_filename
+        with open(filename, 'r', encoding='utf-8'):
             pass
-        print_merged_file(decoded_data['printer'], 'build/' + hashed_filename)
-    except FileNotFoundError:
-        # build pdf
+        modification_time = os.path.getmtime(filename)
         with open('data.json', 'r', encoding='utf-8') as file:
             config_data = json.load(file)
             materials = config_data['materials']
-            processed_materials = process_materials(materials)
-            print_amounts = decoded_data['amounts']
+            for material in materials:
+                if decoded_data['amounts'][material.name] is None:
+                    continue
+                current_modification_time = os.path.getmtime(material.filename)
+                if current_modification_time > modification_time:
+                    buid_merged_pdf(hashed_filename, decoded_data)
+                    break
+        print_merged_file(decoded_data['printer'], 'build/' + hashed_filename)
+    except FileNotFoundError:
+        # build pdf
+        buid_merged_pdf(hashed_filename, decoded_data)
+        print_merged_file(decoded_data['printer'], 'build/' + hashed_filename)
 
-            merge_data = []
-            for material_name in print_amounts:
-                material = processed_materials[material_name]
-                amount = print_amounts[material_name]
-                merge_data.append({
-                    'material': material,
-                    'amount': amount
-                })
 
-            merge_pdf_files('build/' + hashed_filename, merge_data)
-            print_merged_file(decoded_data['printer'], 'build/' + hashed_filename)
+def buid_merged_pdf(filename, data):
+    with open('data.json', 'r', encoding='utf-8') as file:
+        config_data = json.load(file)
+        materials = config_data['materials']
+        processed_materials = process_materials(materials)
+        print_amounts = data['amounts']
+        
+        merge_data = []
+        for material_name in print_amounts:
+            material = processed_materials[material_name]
+            amount = print_amounts[material_name]
+            merge_data.append({
+                'material': material,
+                'amount': amount
+            })
+        
+        merge_pdf_files('build/' + filename, merge_data)
 
 
 def process_materials(materials):
