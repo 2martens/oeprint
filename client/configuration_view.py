@@ -3,6 +3,7 @@ from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtWidgets import QListView, QWidget, QBoxLayout, QSpinBox, QFormLayout, QPushButton, QLabel
 
 from data import DataStorage, Configuration
+from edit_view import EditView
 from helper.model_helper import *
 from material_view import MaterialView
 
@@ -18,6 +19,7 @@ class ConfigurationView(QWidget):
         super(QWidget, self).__init__(parent)
         self._layout = QBoxLayout(QBoxLayout.TopToBottom)
         self.setLayout(self._layout)
+        self._editView = EditView()
         # initialize list view
         self._listView = QListView()
         self._configuration_model = self._get_config_model()
@@ -115,6 +117,7 @@ class ConfigurationView(QWidget):
         Adds the permanent elements to the detail view.
         """
         edit_button = QPushButton("Edit")
+        edit_button.clicked.connect(self._show_edit_view)
         self._detailLayout.addWidget(QLabel("Detail view for selected configuration"))
         self._detailLayout.addWidget(edit_button)
 
@@ -128,6 +131,12 @@ class ConfigurationView(QWidget):
                 self._currentConfiguration.set_config_print_amount(sub_config, new_value)
             self._recalculateEffectivePrintAmounts = True
         return update_func
+    
+    def _show_edit_view(self):
+        """
+        Shows the edit view for the selected configuration.
+        """
+        self._editView.show_for_configuration(self._currentConfiguration)
 
     def _show_detail_view(self, configuration: Configuration):
         """
