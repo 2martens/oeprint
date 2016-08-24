@@ -38,6 +38,7 @@ class Main:
                 else:
                     self._connection.synchronize_data()
                     self._config.set('Data', 'initialized_local_data_file', 'true')
+                    self._config.write()
         except RuntimeWarning as rw:
             message, = rw.args
             if message != 'SSH host is needed for initial synchronization of data file':
