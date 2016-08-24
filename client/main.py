@@ -36,6 +36,7 @@ class Main:
                 if self._config.get('SSH', 'host') == '':
                     raise RuntimeWarning('SSH host is needed for initial synchronization of data file')
                 else:
+                    print('Initial synchronization of data file with server-side data file')
                     self._connection.synchronize_data()
                     self._config.set('Data', 'initialized_local_data_file', 'true')
                     self._config.write()
