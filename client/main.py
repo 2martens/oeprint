@@ -49,7 +49,6 @@ class Main:
             )
             ssh_message_box.setWindowTitle('SSH Host is missing')
             ssh_message_box.exec()
-        
 
         # set up main window
         self.__configurationView = None # type: ConfigurationView
