@@ -1,8 +1,10 @@
 #! /usr/bin/env python3
 import sys
+from shutil import copyfile
 
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QMenuBar, QMenu, QBoxLayout
+from PyQt5.QtWidgets import QMessageBox
 
 from config import ConfigDialog
 from configuration_view import ConfigurationView
@@ -23,14 +25,30 @@ class Main:
         # ensures that there is data before continuing
         self._connection = Connection()
         self._config = Config()
-        ssh_host = self._config.get('SSH', 'host')
-        if ssh_host == '':
-            raise RuntimeError('Please enter the SSH host used for the orientation unit directory in the config.ini')
         try:
             with open(self._config.get("Data", "file"), 'r'):
                 pass
         except FileNotFoundError:
-            self._connection.synchronize_data()
+            copyfile(self._config.get('Data', 'template_file'), self._config.get('Data', 'file'))
+            
+        try:
+            if not self._config.get('Data', 'initialized_local_data_file'):
+                if self._config.get('SSH', 'host') == '':
+                    raise RuntimeWarning('SSH host is needed for initial synchronization of data file')
+                else:
+                    self._connection.synchronize_data()
+                    self._config.set('Data', 'initialized_local_data_file', 'true')
+        except RuntimeWarning as rw:
+            message, = rw.args
+            if message != 'SSH host is needed for initial synchronization of data file':
+                raise
+            ssh_message_box = QMessageBox()
+            ssh_message_box.setText(
+                'Please enter the SSH host used for the orientation unit directory in the preferences window'
+            )
+            ssh_message_box.setWindowTitle('SSH Host is missing')
+            ssh_message_box.exec()
+        
 
         # set up main window
         self.__configurationView = None # type: ConfigurationView
