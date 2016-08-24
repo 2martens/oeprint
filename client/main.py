@@ -23,6 +23,9 @@ class Main:
         # ensures that there is data before continuing
         self._connection = Connection()
         self._config = Config()
+        ssh_host = self._config.get('SSH', 'host')
+        if ssh_host == '':
+            raise RuntimeError('Please enter the SSH host used for the orientation unit directory in the config.ini')
         try:
             with open(self._config.get("Data", "file"), 'r'):
                 pass
