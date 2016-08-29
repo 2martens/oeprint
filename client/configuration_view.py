@@ -16,7 +16,7 @@ class ConfigurationView(QWidget):
     """
 
     def __init__(self, parent=None):
-        super(QWidget, self).__init__(parent)
+        super(ConfigurationView, self).__init__(parent)
         self._layout = QBoxLayout(QBoxLayout.TopToBottom)
         self.setLayout(self._layout)
         self._editView = EditView()

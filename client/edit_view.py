@@ -24,7 +24,7 @@ class EditView(QDialog):
     _configuration_model = None  # type: QTreeWidget
     
     def __init__(self, parent=None):
-        super(QDialog, self).__init__(parent)
+        super(EditView, self).__init__(parent)
         self._layout = QBoxLayout(QBoxLayout.LeftToRight)
         self.setLayout(self._layout)
         self.setWindowTitle('Edit configuration')

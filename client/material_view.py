@@ -18,7 +18,7 @@ class MaterialView(QWidget):
     _material_model = None # type: QTreeWidget
 
     def __init__(self, parent=None):
-        super(QWidget, self).__init__(parent)
+        super(MaterialView, self).__init__(parent)
         self._layout = QBoxLayout(QBoxLayout.TopToBottom)
         self.setLayout(self._layout)
         # initialize tree view
