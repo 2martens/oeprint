@@ -5,12 +5,14 @@ from PyQt5.QtWidgets import QLabel
 from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtWidgets import QTreeWidget
+from PyQt5.QtWidgets import QTreeWidgetItem
 from PyQt5.QtWidgets import QWidget
 
 from data import Configuration
 from data import DataStorage
 from data import Material
-from helper.model_helper import create_new_tree_item, get_item, is_checked, is_checked_tree, check_item
+from helper.model_helper import create_new_tree_item, get_item, is_checked, is_checked_tree, check_item, \
+    check_all_children_tree, check_parents_tree
 
 
 class EditView(QDialog):
@@ -65,6 +67,8 @@ class EditView(QDialog):
         self._materialTreeWidget.itemDoubleClicked.connect(self._check_edit_material)
         self._materialTreeWidget.expanded.connect(self._resize_columns)
         self._materialTreeWidget.collapsed.connect(self._resize_columns)
+        self._materialTreeWidget.selectionModel().currentChanged.connect(self._on_selection_change)
+        self._materialTreeWidget.clicked.connect(self._on_selection_change)
         self._saveButton.clicked.connect(self._save)
 
     @staticmethod
@@ -102,6 +106,19 @@ class EditView(QDialog):
         """
         if column == 1:
             self._configurationTreeWidget.editItem(item, column)
+            
+    def _on_selection_change(self, model_index):
+        """
+        Called on selecting a new item in the treeView.
+        :param model_index: index of selected item
+        :type model_index: QModelIndex
+        """
+        selected_item = self._materialTreeWidget.itemFromIndex(model_index)  # type: QTreeWidgetItem
+        parent_item = selected_item.parent()
+        if parent_item is not None:
+            check_parents_tree(parent_item)
+        
+        check_all_children_tree(selected_item)
         
     def _initialize_material_model(self):
         data = DataStorage()
