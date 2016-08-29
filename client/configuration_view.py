@@ -19,7 +19,7 @@ class ConfigurationView(QWidget):
         super(ConfigurationView, self).__init__(parent)
         self._layout = QBoxLayout(QBoxLayout.TopToBottom)
         self.setLayout(self._layout)
-        self._editView = EditView()
+        self._editView = EditView(parent)
         # initialize list view
         self._listView = QListView()
         self._configuration_model = self._get_config_model()

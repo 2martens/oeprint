@@ -61,7 +61,7 @@ class Main:
         self.__menuBar = self.__create_menu_bar()
         self.__mainWindow.setCentralWidget(self.__contentPane)
         self.__mainWindow.setMenuBar(self.__menuBar)
-        self.__mainWindow.show()
+        self.__mainWindow.showMaximized()
         self.__configurationView.select_first_item()
         self.__returnCode = self.__application.exec()
 
@@ -79,12 +79,11 @@ class Main:
         layout = QBoxLayout(QBoxLayout.LeftToRight)
         content_pane.setLayout(layout)
         # add configuration view
-        self.__configurationView = ConfigurationView()
+        self.__configurationView = ConfigurationView(content_pane)
         layout.addWidget(self.__configurationView)
         # add material view
         material_view = MaterialView()
         layout.addWidget(material_view)
-        # TODO create content pane
         return content_pane
 
     def __create_menu_bar(self):
@@ -107,7 +106,6 @@ class Main:
         preferences_action = edit_menu.addAction('&Preferences')
         preferences_action.triggered.connect(config_dialog.show)
 
-        # TODO fill with actual menu
         # create help menu
         help_menu = QMenu('&Help', menu_bar)
         about_qt_action = help_menu.addAction('About &Qt')

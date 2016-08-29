@@ -1,3 +1,4 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QBoxLayout
 from PyQt5.QtWidgets import QDialog
 from PyQt5.QtWidgets import QFormLayout
@@ -236,4 +237,7 @@ class EditView(QDialog):
         self._initialize_configuration_model(configuration)
         self._resize_columns()
         self._nameField.setText(configuration.get_name())
+        self.setWindowFlags(Qt.Window)
+        self.setModal(True)
+        self.showMaximized()
         self.exec()
