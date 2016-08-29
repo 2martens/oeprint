@@ -5,6 +5,8 @@ from PyQt5.QtGui import QStandardItem
 from PyQt5.QtWidgets import QTreeWidgetItem
 from PyQt5.QtWidgets import QTreeWidget
 
+from helper.tree_widget import TreeWidgetItem
+
 __author__ = "Tim Kilian"
 
 
@@ -17,7 +19,7 @@ def create_new_list_item(text):
 
 
 def create_new_tree_item(text, parent):
-    item = QTreeWidgetItem(parent)
+    item = TreeWidgetItem(parent)
     item.setText(0, text)
     item.setText(1, str(0))
     item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled | Qt.ItemIsEditable)
@@ -127,7 +129,12 @@ def check_parents_tree(item):
     if item.childCount() == 0:
         item = item.parent()
     while item is not None:
-        item.setCheckState(0, QtCore.Qt.Checked if all_children_are_set_tree(item) else QtCore.Qt.Unchecked)
+        if all_children_are_set_tree(item):
+            item.setCheckState(0, QtCore.Qt.Checked)
+        elif all_children_are_not_set_tree(item):
+            item.setCheckState(0, QtCore.Qt.Unchecked)
+        else:
+            item.setCheckState(0, QtCore.Qt.PartiallyChecked)
         item = item.parent()
 
 
@@ -148,8 +155,13 @@ def all_children_are_set_tree(parent_item):
     return False
 
 
-def is_checked_tree(item):
-    return item.checkState(0) == QtCore.Qt.Checked
+def all_children_are_not_set_tree(parent_item):
+    if parent_item.childCount() > 0:
+        for row in range(parent_item.childCount()):
+            if parent_item.child(row).checkState(0) == Qt.Checked:
+                return False
+        return True
+    return False
 
 
 def get_item(root_item, name):

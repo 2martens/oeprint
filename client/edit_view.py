@@ -11,8 +11,9 @@ from PyQt5.QtWidgets import QWidget
 from data import Configuration
 from data import DataStorage
 from data import Material
-from helper.model_helper import create_new_tree_item, get_item, is_checked, is_checked_tree, check_item, \
+from helper.model_helper import create_new_tree_item, get_item, is_checked_tree, check_item, \
     check_all_children_tree, check_parents_tree
+from helper.tree_widget import TreeWidget
 
 
 class EditView(QDialog):
@@ -28,10 +29,10 @@ class EditView(QDialog):
         self.setLayout(self._layout)
         self.setWindowTitle('Edit configuration')
         
-        self._configurationTreeWidget = QTreeWidget()
+        self._configurationTreeWidget = TreeWidget()
         self._configurationTreeWidget.setColumnCount(2)
         self._configurationTreeWidget.setHeaderLabels(["Configuration name", "Print amount"])
-        self._materialTreeWidget = QTreeWidget()
+        self._materialTreeWidget = TreeWidget()
         self._materialTreeWidget.setColumnCount(2)
         self._materialTreeWidget.setHeaderLabels(["Material name", "Print amount"])
         self._initialize_material_model()
@@ -67,8 +68,7 @@ class EditView(QDialog):
         self._materialTreeWidget.itemDoubleClicked.connect(self._check_edit_material)
         self._materialTreeWidget.expanded.connect(self._resize_columns)
         self._materialTreeWidget.collapsed.connect(self._resize_columns)
-        self._materialTreeWidget.selectionModel().currentChanged.connect(self._on_selection_change)
-        self._materialTreeWidget.clicked.connect(self._on_selection_change)
+        self._materialTreeWidget.itemChecked.connect(self._on_toggle)
         self._saveButton.clicked.connect(self._save)
 
     @staticmethod
@@ -107,18 +107,20 @@ class EditView(QDialog):
         if column == 1:
             self._configurationTreeWidget.editItem(item, column)
             
-    def _on_selection_change(self, model_index):
+    def _on_toggle(self, model_index):
         """
         Called on selecting a new item in the treeView.
         :param model_index: index of selected item
         :type model_index: QModelIndex
         """
+        self._materialTreeWidget.blockSignals(True)
         selected_item = self._materialTreeWidget.itemFromIndex(model_index)  # type: QTreeWidgetItem
         parent_item = selected_item.parent()
         if parent_item is not None:
             check_parents_tree(parent_item)
-        
-        check_all_children_tree(selected_item)
+        else:
+            check_all_children_tree(selected_item)
+        self._materialTreeWidget.blockSignals(False)
         
     def _initialize_material_model(self):
         data = DataStorage()

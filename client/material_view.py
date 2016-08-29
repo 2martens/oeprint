@@ -1,7 +1,8 @@
-from PyQt5.QtWidgets import QWidget, QBoxLayout, QLabel, QFormLayout, QTreeWidget
+from PyQt5.QtWidgets import QWidget, QBoxLayout, QLabel, QFormLayout
 
 from data import DataStorage, Material
 from helper.model_helper import *
+from helper.tree_widget import TreeWidget
 from print_view import PrintView
 
 import itertools
@@ -21,7 +22,7 @@ class MaterialView(QWidget):
         self._layout = QBoxLayout(QBoxLayout.TopToBottom)
         self.setLayout(self._layout)
         # initialize tree view
-        self._treeWidget = QTreeWidget()
+        self._treeWidget = TreeWidget()
         # self._treeWidget.setModel(self._get_material_model())
         self._treeWidget.setColumnCount(2)
         self._treeWidget.setHeaderLabels(["Material name", "Print amount"])
@@ -52,10 +53,11 @@ class MaterialView(QWidget):
         # add event listener for selection change
         self._treeWidget.setEditTriggers(self._treeWidget.NoEditTriggers)
         self._treeWidget.itemDoubleClicked.connect(self._check_edit)
-        self._treeWidget.selectionModel().currentChanged.connect(self._on_selection_change)
         self._treeWidget.clicked.connect(self._on_selection_change)
         self._treeWidget.expanded.connect(self._resize_columns)
         self._treeWidget.collapsed.connect(self._resize_columns)
+        self._treeWidget.selectionModel().currentChanged.connect(self._on_selection_change)
+        self._treeWidget.itemChecked.connect(self._on_toggle)
 
     @staticmethod
     def get_model():
@@ -111,8 +113,6 @@ class MaterialView(QWidget):
         current_material = None
 
         if parent_item is not None:
-            check_parents_tree(parent_item)
-
             parent_material = data.get_material(parent_item.text(0))
             sub_materials = parent_material.get_materials()
             for sub_material in sub_materials:
@@ -122,8 +122,18 @@ class MaterialView(QWidget):
         else:
             current_material = materials[current_material_name]
 
-        check_all_children_tree(selected_item)
         self._show_detail_view(current_material)
+        
+    def _on_toggle(self, model_index):
+        self._treeWidget.blockSignals(True)
+        selected_item = self._treeWidget.itemFromIndex(model_index)  # type: QTreeWidgetItem
+        parent_item = selected_item.parent()
+        
+        if parent_item is not None:
+            check_parents_tree(parent_item)
+        else:
+            check_all_children_tree(selected_item)
+        self._treeWidget.blockSignals(False)
 
     def _create_detail_view(self):
         """
