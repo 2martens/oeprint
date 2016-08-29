@@ -222,6 +222,8 @@ class EditView(QDialog):
             material = data.get_material(material_name)
             self._currentConfiguration.add_material(material, material_print_amounts[material_name])
         
+        data.update_configuration(self._currentConfiguration.get_name(), self._currentConfiguration)
+        data.persist()
         self.done(QDialog.Accepted)
 
     def show_for_configuration(self, configuration):
