@@ -14,7 +14,7 @@ class PrintView(QWidget):
     Displays the print view.
     """
     def __init__(self, parent=None):
-        super(QWidget, self).__init__(parent)
+        super(PrintView, self).__init__(parent)
         self._layout = QBoxLayout(QBoxLayout.TopToBottom)
         self.setLayout(self._layout)
         # initialize

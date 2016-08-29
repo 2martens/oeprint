@@ -3,6 +3,7 @@ from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtWidgets import QListView, QWidget, QBoxLayout, QSpinBox, QFormLayout, QPushButton, QLabel
 
 from data import DataStorage, Configuration
+from edit_view import EditView
 from helper.model_helper import *
 from material_view import MaterialView
 
@@ -15,9 +16,10 @@ class ConfigurationView(QWidget):
     """
 
     def __init__(self, parent=None):
-        super(QWidget, self).__init__(parent)
+        super(ConfigurationView, self).__init__(parent)
         self._layout = QBoxLayout(QBoxLayout.TopToBottom)
         self.setLayout(self._layout)
+        self._editView = EditView()
         # initialize list view
         self._listView = QListView()
         self._configuration_model = self._get_config_model()
@@ -49,6 +51,16 @@ class ConfigurationView(QWidget):
         # add event listener for selection change
         self._listView.clicked.connect(self._on_selection_change)
         self._listView.selectionModel().currentChanged.connect(self._on_selection_change)
+
+    def add_configuration(self, configuration):
+        """
+        Adds the given configuration to the list view and opens the edit view.
+        :param configuration:
+        :type configuration: Configuration
+        """
+        item = create_new_list_item(configuration.get_name())
+        self._configuration_model.appendRow(item)
+        self._editView.show_for_configuration(configuration)
 
     def select_first_item(self):
         rect = QRect(0,0,1,1)
@@ -115,6 +127,7 @@ class ConfigurationView(QWidget):
         Adds the permanent elements to the detail view.
         """
         edit_button = QPushButton("Edit")
+        edit_button.clicked.connect(self._show_edit_view)
         self._detailLayout.addWidget(QLabel("Detail view for selected configuration"))
         self._detailLayout.addWidget(edit_button)
 
@@ -128,6 +141,14 @@ class ConfigurationView(QWidget):
                 self._currentConfiguration.set_config_print_amount(sub_config, new_value)
             self._recalculateEffectivePrintAmounts = True
         return update_func
+    
+    def _show_edit_view(self):
+        """
+        Shows the edit view for the selected configuration.
+        """
+        self._editView.show_for_configuration(self._currentConfiguration)
+        selected_indexes = self._listView.selectedIndexes()
+        self._on_selection_change(selected_indexes[0])
 
     def _show_detail_view(self, configuration: Configuration):
         """

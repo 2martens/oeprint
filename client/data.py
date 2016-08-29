@@ -14,6 +14,44 @@ class DataStorage:
         self._file = self._config.get('Data', 'file')
         self._rawData = self._load_file()
         self._processedData = self._process_data()
+        
+    def add_configuration(self, configuration):
+        """
+        Adds a configuration to the processed data.
+        
+        It will not be available on the next instance of DataStorage unless the persist() method is called.
+        :param configuration:
+        :type configuration: Configuration
+        """
+        self._processedData.get("configurations_order").append(configuration.get_name())
+        self._processedData.get("configurations")[configuration.get_name()] = configuration
+        
+    def update_configuration(self, name, configuration):
+        """
+        Updates an existing configuration with a new object.
+        :param name:
+        :type name: str
+        :param configuration:
+        :type configuration: Configuration
+        """
+        configurations = self._processedData.get("configurations")
+        if name in configurations:
+            configurations[name] = configuration
+        
+    def get_configuration(self, name):
+        """
+        Returns the configuration with the given name.
+        :param name:
+        :type name: str
+        :rtype: Configuration
+        """
+        for config_name in self._processedData.get("configurations"):
+            if config_name != name:
+                continue
+            result = self._processedData.get("configurations")[config_name]
+            if result is not None:
+                return result
+        return None
 
     def get_configurations(self) -> dict:
         """
@@ -105,6 +143,42 @@ class DataStorage:
         new_material.add_material(new_sub_material)
         for material in sub_material["children"]:
             self._process_submaterial(new_sub_material, material)
+    
+    def persist(self):
+        """
+        Persists the data to the data.json file.
+        """
+        configurations = self._processedData.get("configurations")
+        configurations_order = self._processedData.get("configurations_order")
+        raw_configurations = []
+        for configuration_name in configurations_order:
+            config = configurations[configuration_name]  # type: Configuration
+            raw_config = {
+                'name': config.get_name(),
+                'materials': [],
+                'configurations': []
+            }
+            material_print_amounts = config.get_material_print_amounts()
+            for material_name in material_print_amounts:
+                raw_config['materials'].append({
+                    'name': material_name,
+                    'amount': material_print_amounts[material_name]
+                })
+            config_print_amounts = config.get_config_print_amounts()
+            for sub_config_name in config_print_amounts:
+                raw_config['configurations'].append({
+                    'name': sub_config_name,
+                    'amount': config_print_amounts[sub_config_name]
+                })
+            
+            raw_configurations.append(raw_config)
+        
+        self._rawData['configurations'] = raw_configurations
+        self._write_file()
+        
+    def _write_file(self):
+        with open(self._file, 'w', encoding='utf-8') as file:
+            json.dump(self._rawData, file, indent=2)
 
     def _load_file(self):
         with open(self._file, 'r', encoding='utf-8') as file:

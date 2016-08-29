@@ -18,7 +18,10 @@ class Config:
         :param key: the key
         :type key: str
         """
-        return self.__config[section][key]
+        value = self.__config[section][key]
+        if value in self.__config.BOOLEAN_STATES:
+            value = self.__config.getboolean(section, key)
+        return value
 
     def set(self, section, key, value):
         """Sets a config value
