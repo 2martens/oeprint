@@ -4,10 +4,13 @@ from shutil import copyfile
 
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QMenuBar, QMenu, QBoxLayout
+from PyQt5.QtWidgets import QDialog
 from PyQt5.QtWidgets import QMessageBox
 
+from add_configuration_dialog import AddConfigurationDialog
 from config import ConfigDialog
 from configuration_view import ConfigurationView
+from edit_view import EditView
 from material_view import MaterialView
 from config import Config
 from connection import Connection
@@ -97,6 +100,8 @@ class Main:
         # edit menu
         edit_menu = QMenu('&Edit', menu_bar)
         config_dialog = ConfigDialog(self.__mainWindow)
+        add_config_action = edit_menu.addAction('&Add configuration')
+        add_config_action.triggered.connect(self.__add_configuration)
         resync_action = edit_menu.addAction('&Synchronize with server')
         resync_action.triggered.connect(self.__synchronize)
         preferences_action = edit_menu.addAction('&Preferences')
@@ -112,6 +117,13 @@ class Main:
         menu_bar.addMenu(edit_menu)
         menu_bar.addMenu(help_menu)
         return menu_bar
+    
+    def __add_configuration(self):
+        add_dialog = AddConfigurationDialog()
+        result = add_dialog.exec()
+        if result == QDialog.Accepted:
+            config = add_dialog.get_configuration()
+            self.__configurationView.add_configuration(config)
     
     def __synchronize(self):
         self._connection.synchronize_data()

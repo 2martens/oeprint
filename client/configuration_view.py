@@ -52,6 +52,16 @@ class ConfigurationView(QWidget):
         self._listView.clicked.connect(self._on_selection_change)
         self._listView.selectionModel().currentChanged.connect(self._on_selection_change)
 
+    def add_configuration(self, configuration):
+        """
+        Adds the given configuration to the list view and opens the edit view.
+        :param configuration:
+        :type configuration: Configuration
+        """
+        item = create_new_list_item(configuration.get_name())
+        self._configuration_model.appendRow(item)
+        self._editView.show_for_configuration(configuration)
+
     def select_first_item(self):
         rect = QRect(0,0,1,1)
         self._listView.setSelection(rect, QItemSelectionModel.Select)
