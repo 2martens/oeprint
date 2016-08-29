@@ -137,6 +137,8 @@ class ConfigurationView(QWidget):
         Shows the edit view for the selected configuration.
         """
         self._editView.show_for_configuration(self._currentConfiguration)
+        selected_indexes = self._listView.selectedIndexes()
+        self._on_selection_change(selected_indexes[0])
 
     def _show_detail_view(self, configuration: Configuration):
         """
