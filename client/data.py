@@ -14,6 +14,21 @@ class DataStorage:
         self._file = self._config.get('Data', 'file')
         self._rawData = self._load_file()
         self._processedData = self._process_data()
+        
+    def get_configuration(self, name):
+        """
+        Returns the configuration with the given name.
+        :param name:
+        :type name: str
+        :rtype: Configuration
+        """
+        for config_name in self._processedData.get("configurations"):
+            if config_name != name:
+                continue
+            result = self._processedData.get("configurations")[config_name]
+            if result is not None:
+                return result
+        return None
 
     def get_configurations(self) -> dict:
         """
