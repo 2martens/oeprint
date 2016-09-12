@@ -17,7 +17,7 @@ def main():
     """Main function for oeprint"""
     parser = argparse.ArgumentParser(description='Printing tool for Orientation Unit')
     parser.add_argument('command', metavar='command', help='the command', choices=['print', 'save'])
-    parser.add_argument('data', type=json.loads, metavar='data', help='the data for the command')
+    parser.add_argument('data', metavar='data', help='the data for the command')
     arguments = parser.parse_args()
 
     if arguments.command == 'print':
@@ -28,16 +28,16 @@ def main():
         pass
 
 
-def print_documents(decoded_data):
+def print_documents(data):
     """
     Manages the printing.
-    :param decoded_data:
-    :type decoded_data: dict
+    :param data:
+    :type data: str
     """
-    data = json.dumps(decoded_data)
     hash_object = hashlib.sha256(data.encode())
     hash_str = hash_object.hexdigest()
     hashed_filename = hash_str + '.pdf'
+    decoded_data = json.loads(data)
 
     try:
         filename = 'build/' + hashed_filename
