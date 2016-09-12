@@ -43,7 +43,7 @@ class Connection:
             "printer": printer
         }
         json_data = json.dumps(data)
-        return self._send_to_server("print", json_data)
+        return self._send_to_server("print", "'" + json_data + "'")
 
     def synchronize_data(self):
         """
