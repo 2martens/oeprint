@@ -13,7 +13,7 @@ def merge_pdf_files(filename, merge_data):
         page_ranges = None # type: list
         add_empty_page = False
         pdf_file = PdfFileReader(material['filename'])
-        if material['pages'] is not None:
+        if 'pages' in material:
             pages = material['pages']
             page_ranges = list(determine_ranges(pages))
             if len(pages) % 2 != 0:
