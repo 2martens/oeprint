@@ -1,47 +1,175 @@
 {
   "configurations": [
-    {
-      "name": "gruppe11",
-      "materials": [
-        {
-          "name": "namensliste",
-          "amount": 1
-        },
-        {
-          "name": "stundenplan_leer",
-          "amount": 10
-        },
-        {
-          "name": "stundenplan_gruppe11",
-          "amount": 12
-        }
-      ],
-      "configurations": []
-    },
-    {
-      "name": "infozentrale",
-      "materials": [
-        {
-          "name": "stundenplan_alle_gruppen",
-          "amount": 2
-        },
-        {
-          "name": "stundenplan_alle_tage",
-          "amount": 1
-        }
-      ],
-      "configurations": []
-    }
   ],
   "materials": [
     {
       "name": "namensliste",
-      "filename": "Material/Studienberatung/namensliste.pdf",
+      "filename": "Material/Studienberatung/Namensliste.pdf",
+      "children": []
+    },
+    {
+      "name": "min-po-bsc",
+      "filename": "Material/Studienberatung/po-BSc.pdf",
+      "children": []
+    },
+    {
+      "name": "min-po-msc",
+      "filename": "Material/Studienberatung/po-MSc.pdf",
       "children": []
     },
     {
       "name": "stundenplan_leer",
       "filename": "Material/Studienberatung/Stundenplan_LEER.pdf",
+      "children": []
+    },
+    {
+      "name": "bsc-inf-fsb",
+      "filename": "Material/Studienberatung/BScInf/FSB.pdf",
+      "children": []
+    },
+    {
+      "name": "bsc-inf-kvv",
+      "filename": "Material/Studienberatung/BScInf/KVV.pdf",
+      "children": []
+    },
+    {
+      "name": "bsc-inf-stundenplan_alles",
+      "filename": "Material/Studienberatung/BScInf/Stundenplan_ALLES.pdf",
+      "children": []
+    },
+    {
+      "name": "bsc-inf-tetris",
+      "filename": "Material/Studienberatung/Tetrise/Modulplaene-BScInf.pdf",
+      "children": []
+    },
+    {
+      "name": "bsc-cis-fsb",
+      "filename": "Material/Studienberatung/CiS/FSB.pdf",
+      "children": []
+    },
+    {
+      "name": "bsc-cis-kvv-biochemie",
+      "filename": "Material/Studienberatung/CiS/KVV_Biochemie.pdf",
+      "children": []
+    },
+    {
+      "name": "bsc-cis-kvv-physik",
+      "filename": "Material/Studienberatung/CiS/KVV_Physik.pdf",
+      "children": []
+    },
+    {
+      "name": "bsc-cis-biochemie-stundenplan_alles",
+      "filename": "Material/Studienberatung/CiS/Stundenplan_ALLES_BIOCHEMIE.pdf",
+      "children": []
+    },
+    {
+      "name": "bsc-cis-physik-stundenplan_alles",
+      "filename": "Material/Studienberatung/CiS/Stundenplan_ALLES_PHYSIK.pdf",
+      "children": []
+    },
+    {
+      "name": "bsc-cis-tetris",
+      "filename": "Material/Studienberatung/Tetrise/Tetris_CiS_OE_prosem-verschoben.pdf",
+      "children": []
+    },
+    {
+      "name": "bsc-mci-fsb",
+      "filename": "Material/Studienberatung/MCI/FSB.pdf",
+      "children": []
+    },
+    {
+      "name": "bsc-mci-kvv",
+      "filename": "Material/Studienberatung/MCI/KVV.pdf",
+      "children": []
+    },
+    {
+      "name": "bsc-mci-stundenplan_alles",
+      "filename": "Material/Studienberatung/MCI/Stundenplan_ALLES.pdf",
+      "children": []
+    },
+    {
+      "name": "bsc-mci-tetris-1",
+      "filename": "Material/Studienberatung/Tetrise/Modulplaene-MCI-1.pdf",
+      "children": []
+    },
+    {
+      "name": "bsc-mci-tetris-2",
+      "filename": "Material/Studienberatung/Tetrise/Modulplaene-MCI-2.pdf",
+      "children": []
+    },
+    {
+      "name": "bsc-sse-fsb",
+      "filename": "Material/Studienberatung/SSE/FSB.pdf",
+      "children": []
+    },
+    {
+      "name": "bsc-sse-kvv",
+      "filename": "Material/Studienberatung/SSE/KVV.pdf",
+      "children": []
+    },
+    {
+      "name": "bsc-sse-stundenplan_alles",
+      "filename": "Material/Studienberatung/SSE/Stundenplan_ALLES.pdf",
+      "children": []
+    },
+    {
+      "name": "bsc-sse-tetris",
+      "filename": "Material/Studienberatung/Tetrise/Modulplaene-SSE.pdf",
+      "children": []
+    },
+    {
+      "name": "msc-ias-fsb",
+      "filename": "Material/Studienberatung/IAS/FSB.pdf",
+      "children": []
+    },
+    {
+      "name": "msc-ias-stundenplan_alles",
+      "filename": "Material/Studienberatung/IAS/Stundenplan_ALLES.pdf",
+      "children": []
+    },
+    {
+      "name": "msc-ias-tetris",
+      "filename": "Material/Studienberatung/Tetrise/Modulplaene-IAS.pdf",
+      "children": []
+    },
+    {
+      "name": "msc-inf-fsb",
+      "filename": "Material/Studienberatung/Master/FSB.pdf",
+      "children": []
+    },
+    {
+      "name": "msc-inf-stundenplan_alles",
+      "filename": "Material/Studienberatung/Master/Stundenplan_ALLES.pdf",
+      "children": []
+    },
+    {
+      "name": "msc-inf-tetris",
+      "filename": "Material/Studienberatung/Tetrise/Modulplaene-MScInf.pdf",
+      "children": []
+    },
+    {
+      "name": "bsc-lehramt-tetris",
+      "filename": "Material/Studienberatung/Tetrise/Modulplaene-Lehramt.pdf",
+      "children": []
+    },
+    {
+      "name": "msc-wiinf-tetris",
+      "filename": "Material/Studienberatung/Tetrise/Modulplaene-MSc_WiInf.pdf",
+      "children": []
+    },
+    {
+      "name": "msc-itmc-tetris",
+      "filename": "Material/Studienberatung/Tetrise/Modulplaene-ITMC.pdf",
+      "children": []
+    },
+    {
+      "name": "msc-bioinf-tetris",
+      "filename": "Material/Studienberatung/Tetrise/Modulplaene-BioInf.pdf",
+      "children": []
+    },
+    {
+      "name": "msc-physik-tetris",
+      "filename": "Material/Studienberatung/Tetrise/Master_Physik_Studienplan_01.pdf",
       "children": []
     },
     {
