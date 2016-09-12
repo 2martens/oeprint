@@ -13,6 +13,7 @@ class Connection:
     def __init__(self):
         self._sshHost = None
         self._dataFile = None
+        self._pathToDir = None
         self._pathToTool = None
         self._pathToData = None
         self._errorObject = None # type: CalledProcessError
@@ -25,6 +26,7 @@ class Connection:
         config = Config()
         self._sshHost = config.get("SSH", "host")
         self._dataFile = config.get("Data", "file")
+        self._pathToDir = config.get("Data", "path_to_dir")
         self._pathToTool = config.get("Data", "path_to_tool")
         self._pathToData = config.get("Data", "path_to_data")
 
@@ -69,7 +71,7 @@ class Connection:
         :rtype:
         """
         try:
-            check_call(["ssh", self._sshHost, "./" + self._pathToTool, command, data])
+            check_call(["ssh", self._sshHost, "cd " + self._pathToDir + "; ./" + self._pathToTool, command, data])
             return True
         except CalledProcessError as cpe:
             self._errorObject = cpe
