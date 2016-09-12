@@ -8,32 +8,36 @@ __author__ = 'Jim Martens'
 
 def merge_pdf_files(filename, merge_data):
     merger = PdfFileMerger()
-    for merge_info in merge_data:
-        material = merge_info['material']
-        page_ranges = None # type: list
-        add_empty_page = False
-        pdf_file = PdfFileReader(material['filename'])
-        if 'pages' in material:
-            pages = material['pages']
-            page_ranges = list(determine_ranges(pages))
-            if len(pages) % 2 != 0:
-                add_empty_page = True
-        else:
-            if pdf_file.getNumPages() % 2 != 0:
-                # the pdf file has an odd number of pages
-                add_empty_page = True
-
-        for x in range(int(merge_info['amount'])):  # print material x amount of times
-            if page_ranges is not None:
-                for start, stop in page_ranges:
-                    merger.append(pdf_file, pages=(start - 1, stop - 1))
+    try:
+        for merge_info in merge_data:
+            material = merge_info['material']
+            page_ranges = None # type: list
+            add_empty_page = False
+            pdf_file = PdfFileReader(material['filename'])
+            if 'pages' in material:
+                pages = material['pages']
+                page_ranges = list(determine_ranges(pages))
+                if len(pages) % 2 != 0:
+                    add_empty_page = True
             else:
-                merger.append(pdf_file)
-
-            if add_empty_page:
-                merger.append('build/emptypage.pdf')
-
-    merger.write(filename)
+                if pdf_file.getNumPages() % 2 != 0:
+                    # the pdf file has an odd number of pages
+                    add_empty_page = True
+    
+            for x in range(int(merge_info['amount'])):  # print material x amount of times
+                if page_ranges is not None:
+                    for start, stop in page_ranges:
+                        merger.append(pdf_file, pages=(start - 1, stop - 1))
+                else:
+                    merger.append(pdf_file)
+    
+                if add_empty_page:
+                    merger.append('build/emptypage.pdf')
+    
+        merger.write(filename)
+    
+    except FileNotFoundError as fnfe:
+        print(fnfe.strerror)
 
 
 def determine_ranges(source: list):
