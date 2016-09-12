@@ -57,6 +57,7 @@ class Main:
 
         # set up main window
         self.__configurationView = None # type: ConfigurationView
+        self.__materialView = None # type: MaterialView
         self.__contentPane = self.__create_content_pane()
         self.__menuBar = self.__create_menu_bar()
         self.__mainWindow.setCentralWidget(self.__contentPane)
@@ -82,8 +83,8 @@ class Main:
         self.__configurationView = ConfigurationView(content_pane)
         layout.addWidget(self.__configurationView)
         # add material view
-        material_view = MaterialView()
-        layout.addWidget(material_view)
+        self.__materialView = MaterialView()
+        layout.addWidget(self.__materialView)
         return content_pane
 
     def __create_menu_bar(self):
@@ -130,6 +131,8 @@ class Main:
         if not self._config.get('Data', 'initialized_local_data_file'):
             self._config.set('Data', 'initialized_local_data_file', 'true')
             self._config.write()
+        self.__configurationView.update_model()
+        self.__materialView.update_model()
 
 if __name__ == '__main__':
     main = Main()

@@ -66,6 +66,10 @@ class ConfigurationView(QWidget):
         rect = QRect(0,0,1,1)
         self._listView.setSelection(rect, QItemSelectionModel.Select)
 
+    def update_model(self):
+        self._configuration_model = self._get_config_model()
+        self._listView.setModel(self._configuration_model)
+
     @staticmethod
     def _get_config_model():
         data = DataStorage()

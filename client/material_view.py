@@ -59,6 +59,10 @@ class MaterialView(QWidget):
         self._treeWidget.selectionModel().currentChanged.connect(self._on_selection_change)
         self._treeWidget.itemChecked.connect(self._on_toggle)
 
+    def update_model(self):
+        MaterialView._material_model = None
+        self._initialize_model()
+
     @staticmethod
     def get_model():
         return MaterialView._material_model
