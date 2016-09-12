@@ -7,13 +7,13 @@ __author__ = 'Jim Martens'
 
 
 def merge_pdf_files(filename, merge_data):
-    merger = PdfFileMerger()
+    merger = PdfFileMerger(strict=False)
     try:
         for merge_info in merge_data:
             material = merge_info['material']
             page_ranges = None # type: list
             add_empty_page = False
-            pdf_file = PdfFileReader(material['filename'])
+            pdf_file = PdfFileReader(material['filename'], strict=False)
             if 'pages' in material:
                 pages = material['pages']
                 page_ranges = list(determine_ranges(pages))
