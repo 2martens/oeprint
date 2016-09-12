@@ -16,7 +16,7 @@ __author__ = 'Jim Martens'
 def main():
     """Main function for oeprint"""
     parser = argparse.ArgumentParser(description='Printing tool for Orientation Unit')
-    parser.add_argument('command', metavar='command', help='the command', choices=['print', 'save'])
+    parser.add_argument('command', metavar='command', help='the command', choices=['print', 'save', 'debug'])
     parser.add_argument('data', metavar='data', help='the data for the command')
     arguments = parser.parse_args()
 
@@ -26,6 +26,8 @@ def main():
     elif arguments.command == 'save':
         # do saving stuff
         pass
+    elif arguments.command == 'debug':
+        print(arguments.data)
 
 
 def print_documents(data):
