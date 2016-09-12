@@ -11,15 +11,18 @@ class Connection:
     Manages the connection with the server.
     """
     def __init__(self):
+        self.reload_config()
+        self._errorObject = None # type: CalledProcessError
+
+    def get_error_object(self):
+        return self._errorObject
+    
+    def reload_config(self):
         config = Config()
         self._sshHost = config.get("SSH", "host")
         self._dataFile = config.get("Data", "file")
         self._pathToTool = config.get("Data", "path_to_tool")
         self._pathToData = config.get("Data", "path_to_data")
-        self._errorObject = None # type: CalledProcessError
-
-    def get_error_object(self):
-        return self._errorObject
 
     def send_print_data(self, print_amounts, printer):
         """
