@@ -50,9 +50,9 @@ def print_documents(data):
             config_data = json.load(file)
             materials = config_data['materials']
             for material in materials:
-                if material.name not in decoded_data['amounts']:
+                if material['name'] not in decoded_data['amounts']:
                     continue
-                current_modification_time = os.path.getmtime(material.filename)
+                current_modification_time = os.path.getmtime(material['filename'])
                 if current_modification_time > modification_time:
                     build_merged_pdf(hashed_filename, decoded_data)
                     break
