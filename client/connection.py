@@ -1,7 +1,10 @@
 import json
-from subprocess import call, check_call, CalledProcessError
+from subprocess import CalledProcessError
+import pexpect
+import time
 
 from config import Config
+from ssh_dialog import SSHInput
 
 __author__ = "Jim Martens"
 
@@ -10,12 +13,13 @@ class Connection:
     """
     Manages the connection with the server.
     """
-    def __init__(self):
+    def __init__(self, ssh_input=None):
         self._sshHost = None
         self._dataFile = None
         self._pathToDir = None
         self._pathToTool = None
         self._pathToData = None
+        self._sshInput = ssh_input # type: SSHInput
         self._errorObject = None # type: CalledProcessError
         self.reload_config()
 
@@ -54,7 +58,15 @@ class Connection:
         :rtype: bool
         """
         try:
-            check_call(["scp", self._sshHost + ":" + self._pathToData, self._dataFile])
+            process = pexpect.spawn(
+                "ssh",
+                [self._sshHost + ":" + self._pathToData, self._dataFile]
+            )
+            process.expect("oe@rzssh1.informatik.uni-hamburg.de's password:")
+            time.sleep(0.1)
+            process.sendline(self._sshInput.readline())
+            time.sleep(2)
+            process.expect(pexpect.EOF)
             return True
         except CalledProcessError as cpe:
             self._errorObject = cpe
@@ -71,7 +83,15 @@ class Connection:
         :rtype:
         """
         try:
-            check_call(["ssh", self._sshHost, "cd " + self._pathToDir + "; ./" + self._pathToTool, command, data])
+            process = pexpect.spawn(
+                "ssh",
+                [self._sshHost, "cd " + self._pathToDir + "; ./" + self._pathToTool, command, data]
+            )
+            process.expect("oe@rzssh1.informatik.uni-hamburg.de's password:")
+            time.sleep(0.1)
+            process.sendline(self._sshInput.readline())
+            time.sleep(2)
+            process.expect(pexpect.EOF)
             return True
         except CalledProcessError as cpe:
             self._errorObject = cpe

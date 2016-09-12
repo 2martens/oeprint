@@ -5,6 +5,7 @@ from config import Config
 from connection import Connection
 from helper.gui_helper import show_error_alert
 from helper.model_helper import *
+from ssh_dialog import SSHInput
 
 __author__ = "Jim Martens"
 
@@ -42,7 +43,8 @@ class PrintView(QWidget):
         """
         print_amounts = self._calculate_print_amounts(self._model.invisibleRootItem())
         printer = self._printerSelection.currentText()
-        connection = Connection()
+        ssh_input = SSHInput(self.parent())
+        connection = Connection(ssh_input)
         self._printButton.setText("Printing...")
         self._printButton.setDown(True)
         result = connection.send_print_data(print_amounts, printer)

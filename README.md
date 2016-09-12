@@ -14,6 +14,7 @@ The client application requires these things:
 - Python 3.4
 - PyQt 5 (GPL v3)
 - Qt 5.3 (GPL v3)
+- pexpect 3.1
 - ssh
 
 The server side requires this:

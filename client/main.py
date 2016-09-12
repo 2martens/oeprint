@@ -14,6 +14,7 @@ from edit_view import EditView
 from material_view import MaterialView
 from config import Config
 from connection import Connection
+from ssh_dialog import SSHInput
 
 
 class Main:
@@ -26,7 +27,8 @@ class Main:
         self.__mainWindow.setWindowTitle('OE Printtool Client')
 
         # ensures that there is data before continuing
-        self._connection = Connection()
+        ssh_input = SSHInput(self.__mainWindow)
+        self._connection = Connection(ssh_input)
         self._config = Config()
         try:
             with open(self._config.get("Data", "file"), 'r'):
