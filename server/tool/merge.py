@@ -23,7 +23,7 @@ def merge_pdf_files(filename, merge_data):
                 # the pdf file has an odd number of pages
                 add_empty_page = True
 
-        for x in range(merge_info['amount']):  # print material x amount of times
+        for x in range(int(merge_info['amount'])):  # print material x amount of times
             if page_ranges is not None:
                 for start, stop in page_ranges:
                     merger.append(pdf_file, pages=(start - 1, stop - 1))
