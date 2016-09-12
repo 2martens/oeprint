@@ -125,6 +125,7 @@ class Main:
     
     def __synchronize(self):
         self._connection.reload_config()
+        self._config = Config()
         self._connection.synchronize_data()
         if not self._config.get('Data', 'initialized_local_data_file'):
             self._config.set('Data', 'initialized_local_data_file', 'true')
