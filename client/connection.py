@@ -11,8 +11,12 @@ class Connection:
     Manages the connection with the server.
     """
     def __init__(self):
-        self.reload_config()
+        self._sshHost = None
+        self._dataFile = None
+        self._pathToTool = None
+        self._pathToData = None
         self._errorObject = None # type: CalledProcessError
+        self.reload_config()
 
     def get_error_object(self):
         return self._errorObject
