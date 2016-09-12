@@ -50,7 +50,7 @@ def print_documents(data):
             config_data = json.load(file)
             materials = config_data['materials']
             for material in materials:
-                if decoded_data['amounts'][material.name] is None:
+                if material.name not in decoded_data['amounts']:
                     continue
                 current_modification_time = os.path.getmtime(material.filename)
                 if current_modification_time > modification_time:
