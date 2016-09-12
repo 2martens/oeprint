@@ -17,30 +17,27 @@ def main():
     """Main function for oeprint"""
     parser = argparse.ArgumentParser(description='Printing tool for Orientation Unit')
     parser.add_argument('command', metavar='command', help='the command', choices=['print', 'save'])
-    parser.add_argument('data', metavar='data', help='the data for the command')
+    parser.add_argument('data', type=json.loads, metavar='data', help='the data for the command')
     arguments = parser.parse_args()
 
-    if arguments['command'] == 'print':
+    if arguments.command == 'print':
         # do printing stuff
-        print_documents(arguments['data'])
-    elif arguments['command'] == 'save':
+        print_documents(arguments.data)
+    elif arguments.command == 'save':
         # do saving stuff
         pass
 
-if __name__ == '__main__':
-    main()
 
-
-def print_documents(data):
+def print_documents(decoded_data):
     """
     Manages the printing.
-    :param data:
-    :type data: str
+    :param decoded_data:
+    :type decoded_data: str
     """
+    data = json.dumps(decoded_data)
     hash_object = hashlib.sha256(data.encode())
     hash_str = hash_object.hexdigest()
     hashed_filename = hash_str + '.pdf'
-    decoded_data = json.loads(data)
 
     try:
         filename = 'build/' + hashed_filename
@@ -55,16 +52,16 @@ def print_documents(data):
                     continue
                 current_modification_time = os.path.getmtime(material.filename)
                 if current_modification_time > modification_time:
-                    buid_merged_pdf(hashed_filename, decoded_data)
+                    build_merged_pdf(hashed_filename, decoded_data)
                     break
         print_merged_file(decoded_data['printer'], 'build/' + hashed_filename)
     except FileNotFoundError:
         # build pdf
-        buid_merged_pdf(hashed_filename, decoded_data)
+        build_merged_pdf(hashed_filename, decoded_data)
         print_merged_file(decoded_data['printer'], 'build/' + hashed_filename)
 
 
-def buid_merged_pdf(filename, data):
+def build_merged_pdf(filename, data):
     with open('data.json', 'r', encoding='utf-8') as file:
         config_data = json.load(file)
         materials = config_data['materials']
@@ -93,3 +90,7 @@ def process_materials(materials):
             processed_materials.update(sub_materials)
 
     return processed_materials
+
+
+if __name__ == '__main__':
+    main()
