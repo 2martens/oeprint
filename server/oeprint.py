@@ -32,7 +32,7 @@ def print_documents(decoded_data):
     """
     Manages the printing.
     :param decoded_data:
-    :type decoded_data: str
+    :type decoded_data: dict
     """
     data = json.dumps(decoded_data)
     hash_object = hashlib.sha256(data.encode())
