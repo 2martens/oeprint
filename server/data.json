@@ -173,6 +173,76 @@
       "children": []
     },
     {
+      "name": "physnet-anmeldung",
+      "filename": "Material/CiS/PHYSnet-Anmeldung.pdf",
+      "children": []
+    },
+    {
+      "name": "stundenplan_physik-oe",
+      "filename": "Material/CiS/Stundenplan_Physik-OE.pdf",
+      "children": []
+    },
+    {
+      "name": "stadtrundgang-stationsliste-2auf1",
+      "filename": "Material/Hamburg/Stationsliste_2016_2auf1.pdf",
+      "children": []
+    },
+    {
+      "name": "ias-gremienskizze-en",
+      "filename": "Material/IAS/en_Gremienskizze.pdf",
+      "children": []
+    },
+    {
+      "name": "ias-glossary-en",
+      "filename": "Material/IAS/ias_glossary.pdf",
+      "children": []
+    },
+    {
+      "name": "ll-feedback-regeln",
+      "filename": "Material/LernenLernen/feedback.pdf",
+      "children": []
+    },
+    {
+      "name": "ll-vorlesungsängste",
+      "filename": "Material/LernenLernen/vorlesungsaengste.pdf",
+      "children": []
+    },
+    {
+      "name": "ll-grundlagenskript",
+      "filename": "Material/LernenLernen/grundlagen.pdf",
+      "children": []
+    },
+    {
+      "name": "ll-aufgaben-teil1",
+      "filename": "Material/LernenLernen/Petrinetze-Aufgaben-Teil1.pdf",
+      "children": []
+    },
+    {
+      "name": "ll-aufgaben-teil2",
+      "filename": "Material/LernenLernen/Petrinetze-Aufgaben-Teil2.pdf",
+      "children": []
+    },
+    {
+      "name": "ll-lösung-teil1",
+      "filename": "Material/LernenLernen/Petrinetze-ML-Teil1.pdf",
+      "children": []
+    },
+    {
+      "name": "ll-lösung-teil2",
+      "filename": "Material/LernenLernen/Petrinetze-ML-Teil2.pdf",
+      "children": []
+    },
+    {
+      "name": "ll-skript-teil1",
+      "filename": "Material/LernenLernen/Petrinetze-Skript-Teil1.pdf",
+      "children": []
+    },
+    {
+      "name": "ll-skript-teil2",
+      "filename": "Material/LernenLernen/Petrinetze-Skript-Teil2.pdf",
+      "children": []
+    },
+    {
       "name": "stundenplan_alle_gruppen",
       "filename": "Material/Stundenplan/gruppenplan2Seiten.pdf",
       "children": [
