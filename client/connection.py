@@ -59,8 +59,8 @@ class Connection:
         """
         try:
             process = pexpect.spawn(
-                "ssh",
-                [self._sshHost + ":" + self._pathToData, self._dataFile]
+                "rsync",
+                ["-vt", self._sshHost + ":" + self._pathToData, self._dataFile]
             )
             process.expect("oe@rzssh1.informatik.uni-hamburg.de's password:")
             time.sleep(0.1)
