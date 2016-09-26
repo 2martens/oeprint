@@ -61,6 +61,7 @@ class MaterialView(QWidget):
 
     def update_model(self):
         MaterialView._material_model = None
+        self._treeWidget.clear()
         self._initialize_model()
 
     @staticmethod
