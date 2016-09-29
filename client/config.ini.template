@@ -3,7 +3,7 @@ host=
 [Data]
 file=data.json
 template_file=data.json.template
-printers=d116_sw,g235_hp
+printers=d001_sw,d116_sw,g235_hp
 path_to_dir=2016/Drucken/
 path_to_tool=oeprint.py
 path_to_data=2016/Drucken/data.json
