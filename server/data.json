@@ -328,11 +328,6 @@
       "children": []
     },
     {
-      "name": "stundenplan-bibplan",
-      "filename": "Material/Stundenplan2016/bibplan.pdf",
-      "children": []
-    },
-    {
       "name": "stundenplan_alle_gruppen_erstiefassung",
       "filename": "Material/Stundenplan2016/out.pdf",
       "children": [
